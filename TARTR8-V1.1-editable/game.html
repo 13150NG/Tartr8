@@ -1,242 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mobile Friendly Catch Game</title>
-    <style>
-        /* Disable scrolling and bounce effects on mobile */
-        html, body {
-            position: fixed;
-            overflow: hidden;
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background: #222;
-            color: #fff;
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            touch-action: none; /* Prevents default zooming and scrolling */
-        }
-        
-        /* Game window adjusts automatically to smaller screens */
-        #gameContainer {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            height: 100%;
-            max-height: 500px;
-            background: #333;
-            border: 4px solid #fff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-        
-        #basket {
-            position: absolute;
-            bottom: 20px;
-            left: 175px;
-            width: 60px; /* Slightly wider for easier mobile play */
-            height: 20px;
-            background: #00ffcc;
-            border-radius: 4px;
-        }
-        
-        .item {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff4444;
-            border-radius: 50%;
-        }
-        
-        #ui {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            pointer-events: none; /* Allows touches to pass through UI text */
-        }
-        
-        #gameOverScreen {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10;
-        }
-        
-        button {
-            padding: 12px 24px;
-            font-size: 18px;
-            background: #00ffcc;
-            color: #222;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Catch — Free Arcade Browser Game | TARTR8 Game Lab</title>
+  <meta name="description" content="Play Catch free in your browser: slide the basket, catch falling drops and post your best score to the TARTR8 leaderboard. Works on mobile and desktop.">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <link rel="canonical" href="https://tartr8.com/game.html">
+  <meta name="theme-color" content="#07080a">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TARTR8 Cyberhub">
+  <meta property="og:title" content="Catch — Free Arcade Browser Game | TARTR8">
+  <meta property="og:description" content="Slide the basket, catch the drops, don't miss three. Can you top the leaderboard?">
+  <meta property="og:url" content="https://tartr8.com/game.html">
+  <meta property="og:image" content="https://tartr8.com/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Catch — Free Arcade Browser Game | TARTR8">
+  <meta name="twitter:description" content="Slide the basket, catch the drops, don't miss three. Can you top the leaderboard?">
+  <meta name="twitter:image" content="https://tartr8.com/assets/og-image.png">
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"></noscript>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "VideoGame",
+  "name": "Catch",
+  "url": "https://tartr8.com/game.html",
+  "description": "A free browser arcade game: slide the basket to catch falling drops. It gets faster — miss three and it's over.",
+  "genre": "Arcade",
+  "gamePlatform": "Web browser",
+  "applicationCategory": "Game",
+  "operatingSystem": "Any",
+  "image": "https://tartr8.com/assets/og-image.png",
+  "publisher": {
+    "@type": "Organization",
+    "name": "TARTR8 Cyberhub",
+    "url": "https://tartr8.com/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "TARTR8",
+    "url": "https://tartr8.com/"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+  </script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/header.css">
+  <link rel="stylesheet" href="css/games.css">
+  <style>
+    /* Lock the page so touch-dragging the basket never scrolls or zooms. */
+    html, body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+    body { display: flex; flex-direction: column; }
+    .site-header { position: relative; }
+
+    .catch-page {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+      gap: 12px;
+    }
+
+    .hud { width: min(440px, 100%); display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .12em; color: var(--muted); }
+    .hud strong { display: block; color: #fff; font-size: 22px; letter-spacing: 0; }
+    .hud .lives strong { color: var(--accent); letter-spacing: .1em; }
+
+    #gameContainer {
+      position: relative;
+      width: min(440px, 100%);
+      flex: 1;
+      max-height: 620px;
+      background:
+        linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 40px 40px,
+        var(--panel);
+      border: 1px solid var(--line-strong);
+      overflow: hidden;
+      touch-action: none;
+      cursor: none;
+    }
+
+    #basket {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 70px;
+      height: 14px;
+      background: var(--accent);
+      box-shadow: 0 0 24px #e77b0088;
+      will-change: transform;
+    }
+
+    .item {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--text);
+      box-shadow: 0 0 12px #ffffff55;
+      will-change: transform;
+    }
+    .item.bonus { background: var(--accent-soft); box-shadow: 0 0 16px var(--accent-soft); }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(7, 8, 10, .86);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 24px;
+      z-index: 10;
+      cursor: default;
+    }
+    .overlay[hidden] { display: none; }
+    .overlay h1 { font-size: clamp(40px, 12vw, 64px); margin: 14px 0 8px; }
+    .overlay p { color: var(--muted); font-size: 14px; max-width: 280px; margin: 0 0 22px; }
+    .overlay .final { font-family: var(--font-display); font-size: 48px; color: #fff; margin: 0; }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--on-accent);
+      border: 0;
+      padding: 14px 26px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .btn-primary:hover { background: var(--accent-soft); color: #111; }
+
+    .hint { font-size: 11px; color: #7a838d; letter-spacing: .1em; }
+    /* Reserve the player badge's space before it loads, so the game box doesn't jump. */
+    .catch-page > .player-tag { min-height: 36px; }
+    .catch-page > .player-tag[hidden] { display: inline-flex !important; visibility: hidden; }
+
+    @media (max-width: 800px) {
+      .header-play { display: inline-block; }
+      .brand img { height: 38px; width: auto; }
+      .account-name { display: none; }
+      .account-btn.signed-in { padding-right: 5px; }
+    }
+    @media (max-width: 380px) {
+      .brand img { height: 32px; width: auto; }
+      .header-play { padding: 10px 11px; }
+    }
+    /* Landscape phones: give the play area as much height as possible. */
+    @media (max-height: 500px) and (orientation: landscape) {
+      :root { --header-height: 52px; }
+      .brand img { height: 32px; width: auto; }
+      .catch-page { padding: 8px 16px; gap: 6px; }
+      .catch-page > .player-tag, .hint { display: none !important; }
+      .hud strong { font-size: 18px; }
+      .overlay h1 { font-size: 34px; margin: 4px 0; }
+      .overlay p { margin-bottom: 10px; }
+    }
+    @media (pointer: coarse) {
+      .account-btn { height: 44px; }
+    }
+  </style>
 </head>
 <body>
-
-<div id="gameContainer">
-    <div id="ui">Score: <span id="score">0</span> | Lives: <span id="lives">3</span></div>
-    <div id="basket"></div>
-    <div id="gameOverScreen">
-        <h2>Game Over!</h2>
-        <p>Final Score: <span id="finalScore">0</span></p>
-        <button onclick="resetGame()">Play Again</button>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="TARTR8 Cyberhub home">
+      <img src="assets/tartr8-logo.png" alt="TARTR8 Cyberhub" width="760" height="257">
+    </a>
+    <div class="header-actions">
+      <div class="account"><button class="account-btn" hidden>Sign in</button></div>
+      <a class="header-play" href="index.html#games">← All games</a>
     </div>
-</div>
+  </header>
 
+  <main class="catch-page">
+    <div class="player-tag" hidden></div>
+    <div class="hud" aria-live="polite">
+      <div>SCORE<strong id="score">0</strong></div>
+      <div>BEST<strong id="best">0</strong></div>
+      <div class="lives">LIVES<strong id="lives">●●●</strong></div>
+    </div>
+
+    <div id="gameContainer">
+      <div id="basket"></div>
+
+      <div class="overlay" id="startScreen">
+        <div class="eyebrow"><span></span> TARTR8 GAME LAB · 04</div>
+        <h1>Catch</h1>
+        <p>Move the basket with your mouse, finger or arrow keys. Miss three and it's over. It gets faster.</p>
+        <button class="btn-primary" id="startBtn">Start game</button>
+      </div>
+
+      <div class="overlay" id="gameOverScreen" hidden>
+        <div class="eyebrow"><span></span> GAME OVER</div>
+        <p class="final" id="finalScore">0</p>
+        <p id="finalNote">points</p>
+        <button class="btn-primary" id="againBtn">Play again</button>
+        <div id="submitSlot"></div>
+      </div>
+    </div>
+
+    <div class="hint">← → OR DRAG TO MOVE · SPACE TO START</div>
+  </main>
+
+<script src="js/api.js"></script>
 <script>
-    const container = document.getElementById('gameContainer');
-    const basket = document.getElementById('basket');
-    const scoreDisplay = document.getElementById('score');
-    const livesDisplay = document.getElementById('lives');
-    const gameOverScreen = document.getElementById('gameOverScreen');
-    const finalScoreDisplay = document.getElementById('finalScore');
+  const container = document.getElementById('gameContainer');
+  const basket = document.getElementById('basket');
+  const scoreEl = document.getElementById('score');
+  const bestEl = document.getElementById('best');
+  const livesEl = document.getElementById('lives');
+  const startScreen = document.getElementById('startScreen');
+  const gameOverScreen = document.getElementById('gameOverScreen');
 
-    let score = 0;
-    let lives = 3;
-    let basketX = 170;
-    const basketWidth = 60;
-    
-    // Dynamic boundaries based on actual bounding box size
-    let containerWidth = container.clientWidth;
-    let containerHeight = container.clientHeight;
-    
-    let items = [];
-    let gameInterval;
-    let spawnCounter = 0;
-    let isGameOver = false;
+  const ITEM = 18, BASKET_W = 70, BASKET_BOTTOM = 20, BASKET_H = 14, MAX_LIVES = 3;
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch {} }
+  };
 
-    // Recalculate dimensions if screen orientation changes
-    window.addEventListener('resize', () => {
-        containerWidth = container.clientWidth;
-        containerHeight = container.clientHeight;
-    });
+  let width = 0, height = 0, basketX = 0, targetX = null;
+  let score = 0, lives = MAX_LIVES, best = Number(store.get('tartr8Catch') || 0);
+  let items = [], running = false, lastTime = 0, spawnTimer = 0, elapsed = 0, frame;
+  const keys = { left: false, right: false };
+  bestEl.textContent = best;
 
-    // Core movement physics logic shared by touch and mouse
-    function moveBasket(clientX) {
-        if (isGameOver) return;
-        const rect = container.getBoundingClientRect();
-        
-        // Centering basket on point of interaction
-        basketX = clientX - rect.left - (basketWidth / 2);
-        
-        // Boundaries restriction
-        if (basketX < 0) basketX = 0;
-        if (basketX > containerWidth - basketWidth) basketX = containerWidth - basketWidth;
-        
-        basket.style.left = basketX + 'px';
+  function measure() {
+    width = container.clientWidth;
+    height = container.clientHeight;
+    basketX = Math.min(Math.max(basketX, 0), width - BASKET_W);
+    drawBasket();
+  }
+  function drawBasket() { basket.style.transform = `translateX(${basketX}px)`; }
+
+  function pointerTo(clientX) {
+    const rect = container.getBoundingClientRect();
+    targetX = clientX - rect.left - BASKET_W / 2;
+  }
+  container.addEventListener('pointermove', e => pointerTo(e.clientX));
+  container.addEventListener('pointerdown', e => pointerTo(e.clientX));
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') { keys.left = true; targetX = null; }
+    if (e.key === 'ArrowRight') { keys.right = true; targetX = null; }
+    if (e.target.closest('form') || document.querySelector('.auth-modal')) return; // typing in the sign-in dialog
+    if ((e.key === ' ' || e.key === 'Enter') && !running) { e.preventDefault(); start(); }
+  });
+  document.addEventListener('keyup', e => {
+    if (e.key === 'ArrowLeft') keys.left = false;
+    if (e.key === 'ArrowRight') keys.right = false;
+  });
+  window.addEventListener('resize', measure);
+
+  function renderLives() { livesEl.textContent = '●'.repeat(lives) + '○'.repeat(MAX_LIVES - lives); }
+
+  function spawn() {
+    const el = document.createElement('div');
+    const bonus = Math.random() < .12;
+    el.className = 'item' + (bonus ? ' bonus' : '');
+    container.appendChild(el);
+    // Speed is in px per second and ramps up over time.
+    items.push({ el, bonus, x: Math.random() * (width - ITEM), y: -ITEM, speed: 170 + Math.random() * 120 + elapsed * 6 });
+  }
+
+  function loop(now) {
+    const dt = Math.min((now - lastTime) / 1000, .05);
+    lastTime = now;
+    elapsed += dt;
+
+    if (targetX !== null) basketX += (targetX - basketX) * Math.min(1, dt * 18);
+    if (keys.left) basketX -= 420 * dt;
+    if (keys.right) basketX += 420 * dt;
+    basketX = Math.min(Math.max(basketX, 0), width - BASKET_W);
+    drawBasket();
+
+    spawnTimer -= dt;
+    if (spawnTimer <= 0) {
+      spawn();
+      spawnTimer = Math.max(.35, .9 - elapsed * .012);
     }
 
-    // 1. Desktop Controls
-    container.addEventListener('mousemove', (e) => {
-        moveBasket(e.clientX);
-    });
+    const catchTop = height - BASKET_BOTTOM - BASKET_H - ITEM;
+    for (let i = items.length - 1; i >= 0; i--) {
+      const it = items[i];
+      const prevY = it.y;
+      it.y += it.speed * dt;
+      it.el.style.transform = `translate(${it.x}px, ${it.y}px)`;
 
-    // 2. Mobile Smartphone Controls
-    container.addEventListener('touchstart', (e) => {
-        moveBasket(e.touches[0].clientX);
-    }, { passive: true });
-
-    container.addEventListener('touchmove', (e) => {
-        e.preventDefault(); // Inhibits whole-page scrolling while moving finger
-        moveBasket(e.touches[0].clientX);
-    }, { passive: false });
-
-    function spawnItem() {
-        const item = document.createElement('div');
-        item.classList.add('item');
-        item.style.left = Math.floor(Math.random() * (containerWidth - 20)) + 'px';
-        item.style.top = '0px';
-        container.appendChild(item);
-        
-        items.push({
-            element: item,
-            y: 0,
-            x: parseInt(item.style.left),
-            speed: 3 + Math.random() * 3
-        });
-    }
-
-    function gameLoop() {
-        if (isGameOver) return;
-
-        spawnCounter++;
-        if (spawnCounter % 40 === 0) {
-            spawnItem();
+      // Caught if the item crossed the basket's top edge this frame while overlapping it horizontally.
+      if (prevY <= catchTop && it.y >= catchTop && it.x + ITEM >= basketX && it.x <= basketX + BASKET_W) {
+        score += it.bonus ? 3 : 1;
+        scoreEl.textContent = score;
+        it.el.remove();
+        items.splice(i, 1);
+      } else if (it.y > height) {
+        it.el.remove();
+        items.splice(i, 1);
+        if (!it.bonus) {
+          lives--;
+          renderLives();
+          if (lives <= 0) return end();
         }
-
-        for (let i = items.length - 1; i >= 0; i--) {
-            let item = items[i];
-            item.y += item.speed;
-            item.element.style.top = item.y + 'px';
-
-            // Basket collision logic
-            if (item.y >= containerHeight - 40 && item.y <= containerHeight - 20) {
-                if (item.x + 20 >= basketX && item.x <= basketX + basketWidth) {
-                    score++;
-                    scoreDisplay.innerText = score;
-                    item.element.remove();
-                    items.splice(i, 1);
-                    continue;
-                }
-            }
-
-            // Floor drop logic
-            if (item.y > containerHeight) {
-                lives--;
-                livesDisplay.innerText = lives;
-                item.element.remove();
-                items.splice(i, 1);
-
-                if (lives <= 0) {
-                    endGame();
-                }
-            }
-        }
-
-        gameInterval = requestAnimationFrame(gameLoop);
+      }
     }
+    frame = requestAnimationFrame(loop);
+  }
 
-    function endGame() {
-        isGameOver = true;
-        cancelAnimationFrame(gameInterval);
-        finalScoreDisplay.innerText = score;
-        gameOverScreen.style.display = 'flex';
+  function start() {
+    if (running) return;
+    items.forEach(it => it.el.remove());
+    items = [];
+    score = 0; lives = MAX_LIVES; elapsed = 0; spawnTimer = .4;
+    scoreEl.textContent = 0;
+    renderLives();
+    startScreen.hidden = true;
+    gameOverScreen.hidden = true;
+    document.getElementById('submitSlot').innerHTML = '';
+    measure();
+    running = true;
+    lastTime = performance.now();
+    frame = requestAnimationFrame(loop);
+  }
+
+  function end() {
+    running = false;
+    cancelAnimationFrame(frame);
+    document.getElementById('finalScore').textContent = score;
+    if (score > best) {
+      best = score;
+      store.set('tartr8Catch', best);
+      bestEl.textContent = best;
+      document.getElementById('finalNote').textContent = 'points — new personal best!';
+    } else {
+      document.getElementById('finalNote').textContent = `points · best ${best}`;
     }
+    gameOverScreen.hidden = false;
+    document.getElementById('againBtn').focus();
+    offerScoreSubmit(document.getElementById('submitSlot'), 'catch', score);
+  }
 
-    function resetGame() {
-        items.forEach(item => item.element.remove());
-        items = [];
-        score = 0;
-        lives = 3;
-        isGameOver = false;
-        scoreDisplay.innerText = score;
-        livesDisplay.innerText = lives;
-        gameOverScreen.style.display = 'none';
-        gameLoop();
-    }
+  document.getElementById('startBtn').onclick = start;
+  document.getElementById('againBtn').onclick = start;
 
-    // Launch game
-    gameLoop();
+  measure();
+  basketX = (width - BASKET_W) / 2;
+  drawBasket();
 </script>
-
 </body>
 </html>

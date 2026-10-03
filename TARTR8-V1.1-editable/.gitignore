@@ -1,0 +1,11 @@
+node_modules/
+server/data/
+.DS_Store
+public/
+.vercel
+.env*
+
+# Helper files added by the Neon/Vercel CLI (not part of the site)
+.agents/
+.claude/
+skills-lock.json

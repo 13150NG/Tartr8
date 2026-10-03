@@ -1,2 +1,107 @@
 /* HEADER / BRAND */
-.site-header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 var(--side-padding);position:sticky;top:0;background:rgba(7,8,10,.88);backdrop-filter:blur(14px);z-index:20}.brand img{width:190px;height:auto;display:block}.nav{display:flex;gap:32px;color:#aeb5bd;font-size:14px}.nav a:hover{color:var(--text)}.header-play{font-size:13px;border:1px solid #38404a;padding:10px 15px}.header-play:hover{border-color:var(--accent);color:var(--accent)}.menu-toggle{display:none;background:none;color:white;border:0;font-size:24px}
+.site-header {
+  height: var(--header-height);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 var(--gutter);
+  position: sticky;
+  top: 0;
+  background: rgba(7, 8, 10, .88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 20;
+}
+.brand img { height: 46px; width: auto; display: block; }
+
+.nav { display: flex; gap: 32px; color: #aeb5bd; font-size: 14px; }
+.nav a { position: relative; padding: 6px 0; transition: color .2s; }
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform .25s;
+}
+.nav a:hover, .nav a.active { color: var(--text); }
+.nav a.active::after { transform: scaleX(1); }
+
+.header-play {
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid var(--line-strong);
+  padding: 10px 15px;
+  transition: border-color .2s, color .2s;
+  white-space: nowrap;
+}
+.header-play:hover { border-color: var(--accent); color: var(--accent); }
+
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+  padding: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+.menu-toggle span { display: block; width: 18px; height: 2px; background: var(--text); transition: transform .25s, opacity .25s; }
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Account button + menu */
+.header-actions { display: flex; align-items: center; gap: 10px; }
+.account { position: relative; }
+.account-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  background: none;
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color .2s, color .2s;
+}
+.account-btn:hover { border-color: var(--accent); color: var(--accent); }
+.account-btn.signed-in { padding-left: 5px; }
+.avatar { width: 28px; height: 28px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 13px; }
+.account-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 260px;
+  background: #0b0e11;
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 20px 50px #000c;
+  padding: 16px;
+  z-index: 30;
+  animation: pop-in .18s ease-out;
+}
+.account-menu-head { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.account-menu-head strong { display: block; font-size: 18px; letter-spacing: 0; text-transform: none; color: var(--text); margin-top: 2px; }
+.account-bests { margin: 12px 0; font-size: 13px; color: var(--muted); }
+.account-bests ul { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.account-bests li { display: flex; align-items: baseline; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.account-bests li span { flex: 1; }
+.account-bests strong { color: var(--text); }
+.account-bests em { font-style: normal; color: var(--accent); font-weight: 700; font-size: 12px; }
+.account-bests small { color: #7a838d; }
+.account-signout { width: 100%; background: none; border: 1px solid var(--line-strong); color: var(--text); padding: 10px; font-weight: 600; cursor: pointer; }
+.account-signout:hover { border-color: var(--bad); color: var(--bad); }

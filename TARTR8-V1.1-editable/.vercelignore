@@ -1,0 +1,9 @@
+node_modules
+server/data
+public
+test
+.env*
+.vercel
+.agents
+.claude
+skills-lock.json

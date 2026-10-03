@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page not found — TARTR8</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07080a">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap"></noscript>
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" href="/css/sections.css">
+  <style>
+    .not-found { min-height: calc(100vh - var(--header-height)); display: grid; place-items: center; text-align: center; padding: 40px var(--gutter); }
+    .not-found .code { font-family: var(--font-display); font-size: clamp(90px, 22vw, 200px); line-height: 1; color: transparent; -webkit-text-stroke: 2px var(--accent); }
+    .not-found p { color: var(--muted); max-width: 420px; margin: 0 auto 28px; }
+    .not-found .actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="TARTR8 Cyberhub home"><img src="/assets/tartr8-logo.png" alt="TARTR8 Cyberhub" width="760" height="257"></a>
+    <a class="header-play" href="/#games">Play Now <span aria-hidden="true">↗</span></a>
+  </header>
+  <main class="not-found">
+    <div>
+      <div class="code" aria-hidden="true">404</div>
+      <h1>Game over — page not found.</h1>
+      <p>The page you're looking for doesn't exist or has moved. Press start on something else.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="/">Back to home <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="/#games">Play a game</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
