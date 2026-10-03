@@ -1,2 +1,235 @@
-/* MOBILE / TABLET */
-@media(max-width:800px){.site-header{padding:0 var(--side-padding)}.brand img{width:160px}.nav,.header-play{display:none}.menu-toggle{display:block}.nav.mobile{display:flex;position:absolute;top:76px;left:0;right:0;background:#090b0d;border-bottom:1px solid var(--line);padding:20px var(--side-padding);flex-direction:column;gap:18px}.hero{grid-template-columns:1fr;padding-top:70px}.hero-visual{height:400px}.hero-stats{gap:22px}.ticker{overflow:hidden;justify-content:flex-start;white-space:nowrap}.section{padding-block:80px}.section-heading{display:block}.section-heading>p{margin-top:25px}.game-grid,.tech-grid{grid-template-columns:1fr}.tech-item{border-right:0;border-bottom:1px solid var(--line)}.challenge-strip{grid-template-columns:1fr}.about-section{grid-template-columns:1fr}.about-mark{display:none}.contact-section{display:block}.contact-box{margin-top:30px;min-width:0}footer{display:block}footer p{margin-top:15px}.hero-card{width:280px}}
+/* RESPONSIVE LAYOUT
+   1000px  small laptop / tablet landscape
+    800px  tablet portrait: hamburger menu, single-column hero and two-panel sections
+    600px  phones: single-column grids, full-screen game popups
+    380px  small phones
+   Plus: short screens (landscape phones / small laptops) and touch-friendly tap targets. */
+
+/* ---------- Small laptop / tablet landscape ---------- */
+@media (max-width: 1000px) {
+  .nav { gap: 22px; }
+  .brand img { height: 42px; width: auto; }
+  .about-section { gap: 40px; }
+  .contact-section { gap: 40px; }
+  .footer-main { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 28px; }
+  .how-it-works { grid-template-columns: 1fr; }
+  .how-it-works .btn { justify-self: start; }
+  .lb-layout { grid-template-columns: 1fr; }
+  .lb-side { position: static; grid-template-columns: 1fr 1fr; align-items: start; }
+}
+
+/* Service cards: side-by-side layout when there isn't room for three columns */
+@media (max-width: 900px) {
+  .service-grid { grid-template-columns: 1fr; }
+  .service-card { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
+  .service-top, .service-card h3, .service-card > p { grid-column: 1; }
+  .service-list { grid-column: 2; grid-row: 1 / span 3; border-top: 0; padding-top: 0; align-content: start; }
+  .service-cta { grid-column: 1 / -1; margin-top: 8px; }
+}
+
+/* ---------- Tablet portrait ---------- */
+@media (max-width: 800px) {
+  .nav, .header-play { display: none; }
+  .account-name { display: none; }
+  .account-btn.signed-in { padding-right: 5px; }
+  .menu-toggle { display: flex; }
+  .nav.mobile {
+    display: flex;
+    position: absolute;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    background: #090b0d;
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 20px 40px #000a;
+    padding: 8px var(--gutter) 16px;
+    flex-direction: column;
+    gap: 0;
+    font-size: 17px;
+  }
+  .nav.mobile a { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .nav.mobile a:last-child { border-bottom: 0; }
+  .nav.mobile a::after { display: none; }
+  .nav.mobile a.active { color: var(--accent); }
+
+  .hero { grid-template-columns: 1fr; padding-top: 50px; min-height: 0; gap: 10px; }
+  .hero-copy > p { font-size: 16px; }
+  .hero-visual { height: 400px; margin-top: 10px; }
+  .hero-stage { width: min(300px, 70%); }
+  .orb-a { width: 260px; height: 260px; }
+  .orb-b { width: 360px; height: 360px; }
+  .chip-champ { right: -10%; }
+  .chip-games { left: -12%; }
+  .chip-rank { right: -2%; }
+  .scroll-cue { display: none; }
+  .hero-stats { gap: 22px; margin-top: 36px; }
+
+  .section { padding-block: 80px; }
+  .section-heading { display: block; margin-bottom: 36px; }
+  .section-heading > p { margin-top: 18px; }
+
+  .challenge-strip { grid-template-columns: 1fr; gap: 10px; }
+
+  .about-section { grid-template-columns: 1fr; gap: 30px; }
+  .about-visual { max-width: 320px; }
+  .about-chip.c2 { right: 0; }
+
+  .contact-section { grid-template-columns: 1fr; gap: 40px; }
+  .contact-points { max-width: none; }
+
+  .footer-main { grid-template-columns: repeat(3, 1fr); gap: 36px 24px; padding: 48px 0 36px; }
+  .footer-brand { grid-column: 1 / -1; }
+  .footer-brand p { max-width: 420px; }
+  .footer-cta { flex-direction: column; align-items: flex-start; padding: 32px 28px; margin-top: 56px; }
+
+  .game-card h3 { margin-top: 28px; }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 600px) {
+  .section { padding-block: 64px; }
+
+  .ticker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
+
+  .game-card { min-height: 0; padding: 22px 22px 64px; }
+  .game-icon { width: 76px; height: 76px; margin-top: 4px; }
+  .game-icon svg { width: 44px; height: 44px; }
+  .game-card h3 { font-size: 28px; margin-top: 22px; }
+  .game-launch { bottom: 18px; left: 22px; }
+
+  .service-card { display: flex; padding: 22px 20px; }
+  .service-list { border-top: 1px solid var(--line); padding-top: 16px; }
+  .how-it-works { padding: 22px 20px; }
+  .how-it-works ol { grid-template-columns: 1fr; gap: 18px; }
+  .how-it-works .btn { width: 100%; justify-content: center; }
+
+  .pillars { grid-template-columns: 1fr; }
+  .pillar { display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; padding: 16px; align-items: center; }
+  .pillar-icon { grid-row: span 2; }
+  .pillar h3 { margin: 0; font-size: 17px; }
+  .roadmap { grid-template-columns: 1fr; gap: 18px; padding-left: 26px; }
+  .roadmap::before { top: 6px; bottom: 6px; left: 5px; right: auto; width: 2px; height: auto; background: linear-gradient(var(--accent) 0 30%, var(--line-strong) 30%); }
+  .roadmap li { padding: 0; }
+  .roadmap li::before { left: -26px; top: 3px; }
+
+  .contact-card { padding: 26px 20px; }
+  .contact-card h3 { font-size: 24px; }
+  .contact-points li { padding: 14px; gap: 14px; }
+  .field-row { grid-template-columns: 1fr; }
+  .form-foot .btn { width: 100%; justify-content: center; }
+
+  .lb-list li { grid-template-columns: 26px 32px 1fr auto; gap: 10px; padding: 10px; }
+  .lb-tabs { display: grid; grid-template-columns: 1fr 1fr; }
+  .lb-podium { gap: 6px; }
+  .pod { padding: 16px 6px 14px; }
+  .pod.p1 { padding-top: 22px; }
+  .pod-avatar { width: 40px; height: 40px; font-size: 18px; }
+  .pod.p1 .pod-avatar { width: 48px; height: 48px; font-size: 22px; }
+  .pod-name { font-size: 13px; }
+  .pod-score { font-size: 20px; }
+  .pod.p1 .pod-score { font-size: 24px; }
+  .pod-meta { display: none; }
+
+  .footer-main { grid-template-columns: 1fr 1fr; }
+  /* Phones: podium → your standing → ranks 4–10 → board info */
+  .lb-layout { gap: 14px; }
+  .lb-main, .lb-side { display: contents; }
+  .lb-podium { order: 1; margin-bottom: 0; }
+  #lbMe { order: 2; }
+  .lb-list { order: 3; }
+  #lbInfo { order: 4; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .footer-cta { padding: 28px 20px; margin-top: 44px; }
+  .footer-cta-actions { width: 100%; flex-direction: column; }
+  .footer-cta-actions .btn { justify-content: center; }
+
+  /* Game and sign-in popups go full-screen */
+  .game-modal { padding: 0; }
+  .game-modal-panel { width: 100%; max-height: 100%; height: 100%; border: 0; padding: 22px 18px calc(22px + env(safe-area-inset-bottom)); }
+  .auth-panel { height: auto; max-height: 100%; margin-top: auto; border-top: 1px solid var(--line-strong); }
+  .game-title { font-size: 32px; }
+  .big-button { width: 160px; height: 160px; }
+  .equation { font-size: 44px; }
+  .answer-row input { width: 120px; }
+  .submit-score { flex-direction: column; align-items: stretch; text-align: center; }
+}
+
+/* ---------- Large phones and below: compact hero extras ---------- */
+@media (max-width: 480px) {
+  .pill-tag { display: none; }
+  .hero-pill { letter-spacing: .14em; }
+  .hero-chip { padding: 7px 10px 7px 7px; gap: 8px; }
+  .chip-icon { width: 26px; height: 26px; }
+  .hero-chip strong { font-size: 12px; }
+  .hero-visual { height: 380px; }
+  .hero-stage { width: min(270px, 76%); }
+  .chip-games { display: none; }
+  .chip-champ { top: -13%; right: -8%; }
+  .chip-rank { bottom: -19%; left: -8%; right: auto; }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 380px) {
+  .brand img { height: 36px; width: auto; }
+  .header-actions { gap: 8px; }
+  .account-btn { padding: 0 10px; }
+  .hero-actions { flex-direction: column; }
+  .hero-actions .btn { justify-content: center; }
+  .hero-stats { gap: 16px; }
+  .hero-stats strong { font-size: 21px; }
+  .lb-tabs button { padding: 6px 10px 6px 6px; font-size: 13px; }
+  .topic-chips span { padding: 8px 11px; }
+  .footer-main { gap: 30px 16px; }
+}
+
+/* ---------- Short screens (landscape phones, small laptops) ---------- */
+@media (max-height: 760px) {
+  .game-modal-panel { padding-top: 24px; padding-bottom: 24px; }
+  .game-title { font-size: 30px; margin: 12px 0 6px; }
+  .score-line { margin: 14px 0; }
+  .big-button { width: 150px; height: 150px; }
+  .memory-board { margin: 12px auto; }
+  .equation { margin: 12px; font-size: 42px; }
+}
+/* Memory board shrinks to fit the screen height so the whole game is visible. */
+.memory-board { width: min(360px, 100%, max(180px, 100vh - 470px)); }
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: 0; padding-block: 40px; }
+  .scroll-cue { display: none; }
+  .game-modal { padding: 0; }
+  .game-modal-panel { width: 100%; height: 100%; max-height: 100%; border: 0; padding: 14px 20px; }
+  .game-modal-top .eyebrow { display: none; }
+  .game-sub { display: none; }
+  .game-title { font-size: 24px; margin: 4px 0; }
+  .score-line { margin: 6px 0; }
+  .score-line strong { font-size: 20px; }
+  .big-button { width: 120px; height: 120px; }
+  /* Memory: board on the right, info on the left */
+  #gameArea:has(.memory-board) { display: grid; grid-template-columns: 1fr auto; column-gap: 28px; align-items: center; }
+  #gameArea:has(.memory-board) > :not(.memory-board) { grid-column: 1; }
+  .memory-board { grid-column: 2; grid-row: 1 / span 6; width: min(300px, 100vh - 60px); gap: 6px; margin: 0; }
+  .equation { font-size: 34px; margin: 6px; }
+  .result { margin-top: 8px; }
+  .auth-panel { padding: 18px 22px; }
+  .auth-tabs { margin: 10px 44px 10px 0; }
+  .auth-hint, .auth-panel > .eyebrow { display: none; }
+}
+
+/* ---------- Touch screens: comfortable tap targets ---------- */
+@media (pointer: coarse) {
+  .game-launch { padding: 12px 0; margin-bottom: -12px; }
+  .footer-col { gap: 2px; }
+  .footer-col a { padding: 10px 0; }
+  .challenge-strip a, .player-tag .link-btn { display: inline-block; padding: 12px 0; }
+  .cp-socials a { padding: 8px 0; }
+  .contact-points li > div > a { display: inline-block; padding: 6px 0; }
+  .link-btn { padding: 10px 2px; }
+  .socials a { width: 46px; height: 46px; }
+  .lb-tabs button { min-height: 44px; }
+  .account-btn, .menu-toggle { min-height: 44px; }
+  .account-btn { height: 44px; }
+  .game-card:hover { transform: none; }
+}

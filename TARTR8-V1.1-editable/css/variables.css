@@ -1,2 +1,21 @@
 /* Edit TARTR8 brand colours and layout variables here. */
-:root{--bg:#07080a;--panel:#0d1014;--line:#222830;--text:#f2f4f5;--muted:#8f98a3;--accent:#e77b00;--accent-soft:#ffad55;--content-width:1180px;--side-padding:6vw;--font-body:"Space Grotesk",Arial,sans-serif;--font-display:"Syne",Arial,sans-serif;}
+:root {
+  --bg: #07080a;
+  --panel: #0d1014;
+  --line: #222830;
+  --line-strong: #38404a;
+  --text: #f2f4f5;
+  --muted: #8f98a3;
+  --accent: #e77b00;
+  --accent-soft: #ffad55;
+  --on-accent: #140b00; /* text on orange backgrounds — white fails contrast */
+  --good: #27c46b;
+  --bad: #ff5a4f;
+  --content-width: 1180px;
+  --side-padding: 6vw;
+  --header-height: 76px;
+  /* Horizontal padding that keeps content inside --content-width on wide screens */
+  --gutter: max(var(--side-padding), calc((100% - var(--content-width)) / 2));
+  --font-body: "Space Grotesk", Arial, sans-serif;
+  --font-display: "Syne", Arial, sans-serif;
+}

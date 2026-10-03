@@ -1,0 +1,13 @@
+{
+  "name": "TARTR8 Cyberhub",
+  "short_name": "TARTR8",
+  "description": "Quick browser games, leaderboards and practical tech help.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080a",
+  "theme_color": "#07080a",
+  "icons": [
+    { "src": "assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "assets/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
