@@ -16,6 +16,6 @@
     { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ],
   "functions": {
-    "api/index.js": { "maxDuration": 10 }
+    "api/index.js": { "maxDuration": 30 }
   }
 }

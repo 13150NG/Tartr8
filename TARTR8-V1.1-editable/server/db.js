@@ -59,7 +59,8 @@ function libsqlDriver(url, authToken) {
 }
 
 // `query(text, params)` must return { rows, rowCount }. Works for node-postgres and for PGlite (tests).
-function postgresDriver(query, close) {
+// `execMultiple(sql)`, if given, runs several statements in one round trip (faster cold starts).
+function postgresDriver(query, close, execMultiple) {
   let n;
   const numbered = sql => { n = 0; return sql.replace(/\?/g, () => `$${++n}`); };
   return {
@@ -73,6 +74,7 @@ function postgresDriver(query, close) {
       return { lastInsertRowid: isInsert ? Number(r.rows[0]?.id) : undefined, changes: r.rowCount ?? r.affectedRows };
     },
     async exec(sql) {
+      if (execMultiple) return execMultiple(sql);
       for (const statement of sql.split(';').map(s => s.trim()).filter(Boolean)) await query(statement, []);
     },
     close
@@ -87,7 +89,7 @@ function nodePostgres(connectionString) {
   // and it stays secure when pg changes what "require" means).
   connectionString = connectionString.replace(/sslmode=(require|prefer|verify-ca)\b/, 'sslmode=verify-full');
   const pool = new Pool({ connectionString, max: 3, idleTimeoutMillis: 10000 });
-  return postgresDriver((text, params) => pool.query(text, params), () => pool.end());
+  return postgresDriver((text, params) => pool.query(text, params), () => pool.end(), sql => pool.query(sql));
 }
 
 async function pglite() {
