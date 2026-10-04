@@ -18,14 +18,13 @@
   .lb-side { position: static; grid-template-columns: 1fr 1fr; align-items: start; }
 }
 
-/* Service cards: side-by-side layout when there isn't room for three columns */
-@media (max-width: 900px) {
-  .service-grid { grid-template-columns: 1fr; }
-  .service-card { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; }
-  .service-top, .service-card h3, .service-card > p { grid-column: 1; }
-  .service-list { grid-column: 2; grid-row: 1 / span 3; border-top: 0; padding-top: 0; align-content: start; }
-  .service-cta { grid-column: 1 / -1; margin-top: 8px; }
+/* Explore Our Services: 4 → 2 → 1 columns */
+@media (max-width: 1100px) { .offer-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) {
+  .offer-grid { grid-template-columns: 1fr; }
+  .offer-card { padding: 18px; }
 }
+
 
 /* ---------- Tablet portrait ---------- */
 @media (max-width: 800px) {
@@ -53,6 +52,7 @@
   .nav.mobile a:last-child { border-bottom: 0; }
   .nav.mobile a::after { display: none; }
   .nav.mobile a.active { color: var(--accent); }
+  .nav.mobile .nav-store { display: block; color: var(--accent); }
 
   .hero { grid-template-columns: 1fr; padding-top: 50px; min-height: 0; gap: 10px; }
   .hero-copy > p { font-size: 16px; }
@@ -79,10 +79,10 @@
   .contact-section { grid-template-columns: 1fr; gap: 40px; }
   .contact-points { max-width: none; }
 
-  .footer-main { grid-template-columns: repeat(3, 1fr); gap: 36px 24px; padding: 48px 0 36px; }
+  .footer-main { grid-template-columns: repeat(3, 1fr); gap: 28px 24px; padding: 32px 0 24px; }
   .footer-brand { grid-column: 1 / -1; }
   .footer-brand p { max-width: 420px; }
-  .footer-cta { flex-direction: column; align-items: flex-start; padding: 32px 28px; margin-top: 56px; }
+  .footer-cta { flex-direction: column; align-items: flex-start; gap: 18px; padding: 24px; margin-top: 36px; }
 
   .game-card h3 { margin-top: 28px; }
 }
@@ -94,13 +94,11 @@
   .ticker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
 
   .game-card { min-height: 0; padding: 22px 22px 64px; }
-  .game-icon { width: 76px; height: 76px; margin-top: 4px; }
-  .game-icon svg { width: 44px; height: 44px; }
+  .game-icon { width: 64px; height: 64px; margin-top: 4px; }
+  .game-icon svg { width: 36px; height: 36px; }
   .game-card h3 { font-size: 28px; margin-top: 22px; }
   .game-launch { bottom: 18px; left: 22px; }
 
-  .service-card { display: flex; padding: 22px 20px; }
-  .service-list { border-top: 1px solid var(--line); padding-top: 16px; }
   .how-it-works { padding: 22px 20px; }
   .how-it-works ol { grid-template-columns: 1fr; gap: 18px; }
   .how-it-works .btn { width: 100%; justify-content: center; }
@@ -140,10 +138,19 @@
   #lbMe { order: 2; }
   .lb-list { order: 3; }
   #lbInfo { order: 4; }
-  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 12px; }
-  .footer-cta { padding: 28px 20px; margin-top: 44px; }
-  .footer-cta-actions { width: 100%; flex-direction: column; }
-  .footer-cta-actions .btn { justify-content: center; }
+  .footer-bottom { grid-template-columns: 1fr; justify-items: center; gap: 10px; }
+  .footer-bottom .site-status, .footer-bottom .back-top { justify-self: center; }
+  .footer-cta { padding: 20px 18px; margin-top: 28px; }
+  .footer-main { gap: 24px 16px; padding: 28px 0 20px; }
+  .footer-brand p { margin: 10px 0 14px; }
+  .footer-cta-actions { width: 100%; }
+  .footer-cta-actions .btn { flex: 1; justify-content: center; padding: 12px 10px; }
+  /* Explore on the left; Games with Contact stacked under it on the right */
+  .footer-main { grid-template-areas: "brand brand" "explore games" "explore contact"; }
+  .footer-brand { grid-area: brand; }
+  .fc-explore { grid-area: explore; }
+  .fc-games { grid-area: games; }
+  .fc-contact { grid-area: contact; }
 
   /* Game and sign-in popups go full-screen */
   .game-modal { padding: 0; }
@@ -158,7 +165,6 @@
 
 /* ---------- Large phones and below: compact hero extras ---------- */
 @media (max-width: 480px) {
-  .pill-tag { display: none; }
   .hero-pill { letter-spacing: .14em; }
   .hero-chip { padding: 7px 10px 7px 7px; gap: 8px; }
   .chip-icon { width: 26px; height: 26px; }
@@ -180,7 +186,7 @@
   .hero-stats { gap: 16px; }
   .hero-stats strong { font-size: 21px; }
   .lb-tabs button { padding: 6px 10px 6px 6px; font-size: 13px; }
-  .topic-chips span { padding: 8px 11px; }
+  .topic-chips label > span { padding: 8px 11px; }
   .footer-main { gap: 30px 16px; }
 }
 
@@ -222,14 +228,15 @@
 @media (pointer: coarse) {
   .game-launch { padding: 12px 0; margin-bottom: -12px; }
   .footer-col { gap: 2px; }
-  .footer-col a { padding: 10px 0; }
+  .footer-col a { padding: 8px 0; }
   .challenge-strip a, .player-tag .link-btn { display: inline-block; padding: 12px 0; }
   .cp-socials a { padding: 8px 0; }
   .contact-points li > div > a { display: inline-block; padding: 6px 0; }
   .link-btn { padding: 10px 2px; }
-  .socials a { width: 46px; height: 46px; }
+  .socials a { width: 44px; height: 44px; }
   .lb-tabs button { min-height: 44px; }
   .account-btn, .menu-toggle { min-height: 44px; }
   .account-btn { height: 44px; }
   .game-card:hover { transform: none; }
+  .pill-tag { padding: 7px 10px; margin: -4px 0; }
 }

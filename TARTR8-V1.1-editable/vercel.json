@@ -11,10 +11,11 @@
     },
     { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=604800" }, "continue": true },
     { "src": "/api(?:/.*)?", "dest": "/api" },
+    { "src": "/store/?", "dest": "/store.html" },
     { "handle": "filesystem" },
     { "src": "/(.*)", "status": 404, "dest": "/404.html" }
   ],
   "functions": {
-    "api/index.js": { "maxDuration": 10 }
+    "api/index.js": { "maxDuration": 30 }
   }
 }

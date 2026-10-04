@@ -59,7 +59,8 @@ function libsqlDriver(url, authToken) {
 }
 
 // `query(text, params)` must return { rows, rowCount }. Works for node-postgres and for PGlite (tests).
-function postgresDriver(query, close) {
+// `execMultiple(sql)`, if given, runs several statements in one round trip (faster cold starts).
+function postgresDriver(query, close, execMultiple) {
   let n;
   const numbered = sql => { n = 0; return sql.replace(/\?/g, () => `$${++n}`); };
   return {
@@ -73,6 +74,7 @@ function postgresDriver(query, close) {
       return { lastInsertRowid: isInsert ? Number(r.rows[0]?.id) : undefined, changes: r.rowCount ?? r.affectedRows };
     },
     async exec(sql) {
+      if (execMultiple) return execMultiple(sql);
       for (const statement of sql.split(';').map(s => s.trim()).filter(Boolean)) await query(statement, []);
     },
     close
@@ -87,7 +89,7 @@ function nodePostgres(connectionString) {
   // and it stays secure when pg changes what "require" means).
   connectionString = connectionString.replace(/sslmode=(require|prefer|verify-ca)\b/, 'sslmode=verify-full');
   const pool = new Pool({ connectionString, max: 3, idleTimeoutMillis: 10000 });
-  return postgresDriver((text, params) => pool.query(text, params), () => pool.end());
+  return postgresDriver((text, params) => pool.query(text, params), () => pool.end(), sql => pool.query(sql));
 }
 
 async function pglite() {
@@ -154,9 +156,11 @@ const POSTGRES_SCHEMA = `
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     message TEXT NOT NULL,
-    topic TEXT NOT NULL DEFAULT 'general',
+    topic TEXT NOT NULL DEFAULT 'other',
+    subject TEXT,
     created_at TEXT NOT NULL
   );
+  ALTER TABLE messages ADD COLUMN IF NOT EXISTS subject TEXT;
   CREATE INDEX IF NOT EXISTS idx_scores_game_user ON scores (game, user_id, score);
 `;
 
@@ -171,6 +175,7 @@ async function migrate(db) {
   }
   const messageColumns = (await db.all('PRAGMA table_info(messages)')).map(c => c.name);
   if (!messageColumns.includes('topic')) await db.exec("ALTER TABLE messages ADD COLUMN topic TEXT NOT NULL DEFAULT 'general'");
+  if (!messageColumns.includes('subject')) await db.exec('ALTER TABLE messages ADD COLUMN subject TEXT');
   await db.exec(`
     DROP INDEX IF EXISTS idx_scores_game_score;
     CREATE INDEX IF NOT EXISTS idx_scores_game_user ON scores (game, user_id, score);

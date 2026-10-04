@@ -14,7 +14,7 @@ if (menuToggle && nav) {
 }
 
 // Highlight the nav link for the section currently in view.
-const navLinks = [...document.querySelectorAll('.nav a')];
+const navLinks = [...document.querySelectorAll('.nav a[href^="#"]')]; // on-page sections only (not /store)
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;

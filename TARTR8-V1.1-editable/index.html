@@ -12,16 +12,16 @@
   <!-- Social sharing previews -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="TARTR8 Cyberhub">
-  <meta property="og:title" content="TARTR8 Cyberhub — Tech • Games • Digital">
+  <meta property="og:title" content="TARTR8 Cyberhub — Tech • Digital • Play">
   <meta property="og:description" content="Play quick browser games, climb the leaderboard and get practical tech help.">
   <meta property="og:url" content="https://tartr8.com/">
   <meta property="og:image" content="https://tartr8.com/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="TARTR8 Cyberhub — Tech, Games, Digital">
+  <meta property="og:image:alt" content="TARTR8 Cyberhub — Tech, Digital, Play">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="TARTR8 Cyberhub — Tech • Games • Digital">
+  <meta name="twitter:title" content="TARTR8 Cyberhub — Tech • Digital • Play">
   <meta name="twitter:description" content="Play quick browser games, climb the leaderboard and get practical tech help.">
   <meta name="twitter:image" content="https://tartr8.com/assets/og-image.png">
 
@@ -168,10 +168,11 @@
       <a href="#tech">Tech</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
+      <a class="nav-store" href="/store">Store</a>
     </nav>
     <div class="header-actions">
+      <a class="header-play" href="/store">Store <span aria-hidden="true">↗</span></a>
       <div class="account"><button class="account-btn" hidden>Sign in</button></div>
-      <a class="header-play" href="#games">Play Now <span aria-hidden="true">↗</span></a>
       <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
         <span></span><span></span><span></span>
       </button>
@@ -183,9 +184,9 @@
       <div class="hero-bg" aria-hidden="true"><i class="glow g1"></i><i class="glow g2"></i><i class="glow g3"></i></div>
 
       <div class="hero-copy">
-        <div class="hero-pill"><span class="pulse"></span>TECH • GAMES • DIGITAL<span class="pill-tag" data-online hidden>Leaderboards live</span></div>
+        <div class="hero-pill"><span class="pulse"></span>TECH • DIGITAL • PLAY<a class="pill-tag" href="#games">Game!!!</a></div>
         <h1>Built for the<br><em>next move.</em></h1>
-        <p>TARTR8 is a digital playground for quick games, technology and the things that keep you moving forward.</p>
+        <p>We design and build software, digital products and intelligent systems for businesses and people moving forward.</p>
         <div class="hero-actions">
           <a class="btn btn-primary btn-glow" href="#games">Play a game <span aria-hidden="true">→</span></a>
           <a class="btn btn-ghost" href="#tech">Explore tech</a>
@@ -336,55 +337,64 @@
     <section id="tech" class="section tech-section">
       <div class="section-heading">
         <div><div class="eyebrow"><span></span> TECH</div><h2>Digital tools.<br><em>Real solutions.</em></h2></div>
-        <p>Practical help with computers and tech — from setup to repairs. <span class="soon-badge"><i></i>Launching soon</span> Ask us now and we'll get back to you.</p>
+        <p>Engineering exceptional digital experiences through technology. <span class="soon-badge"><i></i>Launching soon</span> Ask us now and we'll get back to you.</p>
       </div>
 
-      <div class="service-grid">
-        <article class="service-card">
-          <div class="service-top">
-            <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M8 20h8M12 16v4"/><path d="M9.5 10l1.8 1.8 3.4-3.6"/></svg></span>
-            <span class="service-num">01</span>
-          </div>
-          <h3>Computer Services</h3>
-          <p>Get your computer set up properly and running smoothly — without the jargon.</p>
-          <ul class="service-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>New computer setup</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Speed-ups and optimization</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Troubleshooting problems</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Practical technical support</li>
-          </ul>
-          <a class="service-cta" href="#contact" data-topic="services" data-message="Hi TARTR8, I'd like help with computer services: ">Ask about services <span aria-hidden="true">→</span></a>
+      <div class="offer-block">
+        <div class="offer-head">
+          <div class="eyebrow"><span></span> WHAT WE BUILD</div>
+          <h3>Explore Our Services</h3>
+        </div>
+        <div class="offer-grid">
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.6-.8 1.6-1.6 0-.5-.2-.9-.5-1.2a1.6 1.6 0 0 1 1.2-2.7H17a4 4 0 0 0 4-4C21 6.5 17 3 12 3z"/><circle cx="7.5" cy="11" r="1.1" fill="currentColor"/><circle cx="10" cy="7" r="1.1" fill="currentColor"/><circle cx="15" cy="7" r="1.1" fill="currentColor"/></svg></span>
+          <h4>Design</h4>
+          <p>We combine creativity with strategy through branding, web design, and UI/UX design, to create designs that pass your message effectively and elevate your brand visual impression.</p>
+          <a class="offer-link" href="#contact" data-topic="design">Ask about this <span aria-hidden="true">→</span></a>
         </article>
-        <article class="service-card">
-          <div class="service-top">
-            <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7M12 11v10"/></svg></span>
-            <span class="service-num">02</span>
-          </div>
-          <h3>Products</h3>
-          <p>Find the right hardware for what you actually need, from full setups to small extras.</p>
-          <ul class="service-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Computers</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Accessories</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Gadgets</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Useful digital hardware</li>
-          </ul>
-          <a class="service-cta" href="#contact" data-topic="products" data-message="Hi TARTR8, I'm looking for a product: ">Ask about products <span aria-hidden="true">→</span></a>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2"/><path d="M9 12a13 13 0 0 1 11-9 13 13 0 0 1-9 11l-2 2-4-4z"/><path d="M9 12H5l2-4h5M12 15v4l4-2v-5"/><circle cx="15.5" cy="8.5" r="1.3"/></svg></span>
+          <h4>Product</h4>
+          <p>We take your product idea and turn it into reality, handling everything from design and engineering to testing and launch. We give attention to all processes involved in building a great product.</p>
+          <a class="offer-link" href="#contact" data-topic="product">Ask about this <span aria-hidden="true">→</span></a>
         </article>
-        <article class="service-card">
-          <div class="service-top">
-            <span class="service-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.2L3.5 17.3a1.8 1.8 0 0 0 2.5 2.5l5.8-5.8a4 4 0 0 0 5.2-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></span>
-            <span class="service-num">03</span>
-          </div>
-          <h3>Repairs &amp; Support</h3>
-          <p>Something broken or acting strange? We'll find the cause and help keep it running.</p>
-          <ul class="service-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Diagnostics</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Repairs and maintenance</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>After-sales assistance</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>Advice on what to do next</li>
-          </ul>
-          <a class="service-cta" href="#contact" data-topic="repairs" data-message="Hi TARTR8, I need help with a repair. The problem is: ">Ask about a repair <span aria-hidden="true">→</span></a>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="1.5"/><path d="M2.5 8.5h19M5.5 6.2h.01M8 6.2h.01"/><path d="M9.5 12.5l-2 2 2 2M14.5 12.5l2 2-2 2"/></svg></span>
+          <h4>Web Development</h4>
+          <p>We create custom websites and web applications that fit your business needs. Our team uses the latest technology to make your site look good and work perfectly on any device.</p>
+          <a class="offer-link" href="#contact" data-topic="web">Ask about this <span aria-hidden="true">→</span></a>
         </article>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6.5" y="2.5" width="11" height="19" rx="2"/><path d="M10.5 5.5h3M11 18.5h2"/></svg></span>
+          <h4>Mobile Development</h4>
+          <p>We design and build high-performing mobile apps for iOS &amp; Android, designed to seamlessly meet your needs and delight your users using the latest technology available.</p>
+          <a class="offer-link" href="#contact" data-topic="mobile">Ask about this <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="1.5"/><path d="M9.5 9.5h5v5h-5z"/><path d="M9 2.5V6M15 2.5V6M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></svg></span>
+          <h4>AI &amp; Machine Learning</h4>
+          <p>We build using the latest AI and machine learning technology to create powerful tools for businesses. Our custom solutions make processes smarter and help you make better decisions.</p>
+          <a class="offer-link" href="#contact" data-topic="ai">Ask about this <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.3A5 5 0 0 1 21 19"/></svg></span>
+          <h4>Team Optimization</h4>
+          <p>Our focus is on helping your team perform at its best. We provide solutions and strategies to improve collaboration, boost productivity, and streamline workflows.</p>
+          <a class="offer-link" href="#contact" data-topic="team">Ask about this <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><path d="M12 3v2M21 12h-2"/></svg></span>
+          <h4>IT Consulting</h4>
+          <p>We provide expert IT consulting services to help your business leverage technology effectively. Our consultants offer strategic guidance, system optimization, and technology implementation support to drive digital transformation.</p>
+          <a class="offer-link" href="#contact" data-topic="consulting">Ask about this <span aria-hidden="true">→</span></a>
+        </article>
+        <article class="offer-card">
+          <span class="offer-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.8l7.5 3v5.6c0 4.6-3.2 8.3-7.5 9.8-4.3-1.5-7.5-5.2-7.5-9.8V5.8z"/><path d="M9 12l2 2 4-4.5"/></svg></span>
+          <h4>DevSecOps &amp; Engineering</h4>
+          <p>We deliver secure, scalable software faster. Our DevSecOps, SRE, and Platform Engineering expertise ensures rapid development, reliable performance, and worry-free deployments.</p>
+          <a class="offer-link" href="#contact" data-topic="devsecops">Ask about this <span aria-hidden="true">→</span></a>
+        </article>
+        </div>
       </div>
 
       <div class="how-it-works">
@@ -394,7 +404,7 @@
           <li><span class="step-num">2</span><div><strong>We get back to you</strong><p>We reply by email with questions, advice or options.</p></div></li>
           <li><span class="step-num">3</span><div><strong>Get it sorted</strong><p>We agree the next steps together, so there are no surprises.</p></div></li>
         </ol>
-        <a class="btn btn-primary" href="#contact" data-topic="general">Get in touch <span aria-hidden="true">→</span></a>
+        <a class="btn btn-primary" href="#contact">Get in touch <span aria-hidden="true">→</span></a>
       </div>
     </section>
 
@@ -478,18 +488,22 @@
         <div class="contact-offline" data-offline>
           <h3>Say hello</h3>
           <p>Interested in TARTR8, a service or a collaboration? Email us and we'll get back to you.</p>
-          <a class="btn btn-primary" href="mailto:hello@tartr8.com">Email hello@tartr8.com <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-primary" href="mailto:hello@tartr8.com?subject=Website%20enquiry">Email hello@tartr8.com <span aria-hidden="true">↗</span></a>
         </div>
 
         <form class="contact-form" id="contactForm" data-online hidden novalidate>
           <h3>Send a message</h3>
           <fieldset class="topic-chips">
-            <legend>What's it about?</legend>
-            <label><input type="radio" name="topic" value="general" checked><span>General</span></label>
-            <label><input type="radio" name="topic" value="services"><span>Services</span></label>
-            <label><input type="radio" name="topic" value="products"><span>Products</span></label>
-            <label><input type="radio" name="topic" value="repairs"><span>Repairs</span></label>
-            <label><input type="radio" name="topic" value="collaboration"><span>Collaboration</span></label>
+            <legend>What's it about? <span class="legend-note">This becomes your message subject</span></legend>
+            <label><input type="radio" name="topic" value="design" required><span>Design</span></label>
+            <label><input type="radio" name="topic" value="product" required><span>Product</span></label>
+            <label><input type="radio" name="topic" value="web" required><span>Web Development</span></label>
+            <label><input type="radio" name="topic" value="mobile" required><span>Mobile Development</span></label>
+            <label><input type="radio" name="topic" value="ai" required><span>AI &amp; Machine Learning</span></label>
+            <label><input type="radio" name="topic" value="team" required><span>Team Optimization</span></label>
+            <label><input type="radio" name="topic" value="consulting" required><span>IT Consulting</span></label>
+            <label><input type="radio" name="topic" value="devsecops" required><span>DevSecOps &amp; Engineering</span></label>
+            <label><input type="radio" name="topic" value="other" required><span>Other</span></label>
           </fieldset>
           <div class="field-row">
             <label class="field">Name<input name="name" maxlength="80" required autocomplete="name" placeholder="Your name"></label>
@@ -521,7 +535,6 @@
       <div class="footer-cta-copy">
         <div class="eyebrow"><span></span> READY?</div>
         <h2>Ready for your <em>next move?</em></h2>
-        <p>Jump into a quick game, chase the top spot, or tell us what you need.</p>
       </div>
       <div class="footer-cta-actions">
         <a class="btn btn-primary btn-glow" href="#games">Play a game <span aria-hidden="true">→</span></a>
@@ -532,7 +545,7 @@
     <div class="footer-main">
       <div class="footer-brand">
         <a href="#home" aria-label="TARTR8 Cyberhub home"><img class="footer-logo" src="assets/tartr8-logo.png" alt="TARTR8 Cyberhub" width="760" height="257" loading="lazy"></a>
-        <p>A digital playground for quick games, technology and the things that keep you moving forward.</p>
+        <p>Quick games, tech help and digital culture.</p>
         <!-- Replace these URLs with the TARTR8 page addresses for each platform. -->
         <div class="socials">
           <a class="s-fb" href="https://www.facebook.com/" target="_blank" rel="noopener" aria-label="TARTR8 on Facebook">
@@ -547,7 +560,7 @@
         </div>
       </div>
 
-      <nav class="footer-col" aria-label="Explore">
+      <nav class="footer-col fc-explore" aria-label="Explore">
         <h3>Explore</h3>
         <a href="#home">Home</a>
         <a href="#games">Game Lab</a>
@@ -556,7 +569,7 @@
         <a href="#about">About</a>
       </nav>
 
-      <nav class="footer-col" aria-label="Games">
+      <nav class="footer-col fc-games" aria-label="Games">
         <h3>Games</h3>
         <a href="#games" data-open-game="reaction">Reaction</a>
         <a href="#games" data-open-game="memory">Memory</a>
@@ -564,19 +577,18 @@
         <a href="game.html">Catch</a>
       </nav>
 
-      <div class="footer-col">
+      <div class="footer-col fc-contact">
         <h3>Contact</h3>
         <a href="mailto:hello@tartr8.com">hello@tartr8.com</a>
         <a href="#contact">Send a message</a>
-        <p class="footer-note">Computer services, products, repairs and collaborations.</p>
       </div>
     </div>
 
     <div class="footer-wordmark" aria-hidden="true">TARTR8</div>
 
     <div class="footer-bottom">
-      <p>© 2026 TARTR8 Cyberhub. Tech • Games • Digital.</p>
       <span class="site-status" id="siteStatus"><i></i>Checking status…</span>
+      <p>© 2026 TARTR8 Cyberhub. Tech • Digital • Play.</p>
       <a class="back-top" href="#home" aria-label="Back to top"><span>Back to top</span><b aria-hidden="true">↑</b></a>
     </div>
   </footer>
