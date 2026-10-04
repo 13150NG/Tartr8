@@ -8,6 +8,9 @@
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "messages": "node server/messages.js",
+    "messages:live": "sh scripts/with-live-db.sh node server/messages.js",
+    "accounts": "node server/accounts.js",
+    "accounts:live": "sh scripts/with-live-db.sh node server/accounts.js",
     "test": "node --test \"test/*.test.js\" && TEST_DRIVER=libsql node --test \"test/*.test.js\" && TEST_DRIVER=postgres node --test \"test/*.test.js\"",
     "build": "node scripts/build-public.js",
     "deploy:vercel": "sh scripts/deploy-vercel.sh"
