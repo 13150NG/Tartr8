@@ -16,9 +16,9 @@
 }
 .game-card.featured { background: linear-gradient(145deg, #17120c, #0c0e10); }
 .game-icon {
-  width: 104px;
-  height: 104px;
-  margin: 12px auto 0;
+  width: 84px;
+  height: 84px;
+  margin: 8px auto 0;
   display: grid;
   place-items: center;
   border: 1px solid var(--line-strong);
@@ -26,7 +26,7 @@
   color: #c9cfd5;
   transition: border-color .25s, color .25s;
 }
-.game-icon svg { width: 60px; height: 60px; }
+.game-icon svg { width: 48px; height: 48px; }
 .game-icon .accent { stroke: var(--accent); }
 .game-icon .accent-fill { fill: var(--accent); stroke: none; }
 .game-icon .lit { fill: var(--accent); stroke: var(--accent); }

@@ -30,6 +30,7 @@
   transition: transform .25s;
 }
 .nav a:hover, .nav a.active { color: var(--text); }
+.nav .nav-store { display: none; }
 .nav a.active::after { transform: scaleX(1); }
 
 .header-play {

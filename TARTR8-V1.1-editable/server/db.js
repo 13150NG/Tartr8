@@ -154,9 +154,11 @@ const POSTGRES_SCHEMA = `
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     message TEXT NOT NULL,
-    topic TEXT NOT NULL DEFAULT 'general',
+    topic TEXT NOT NULL DEFAULT 'other',
+    subject TEXT,
     created_at TEXT NOT NULL
   );
+  ALTER TABLE messages ADD COLUMN IF NOT EXISTS subject TEXT;
   CREATE INDEX IF NOT EXISTS idx_scores_game_user ON scores (game, user_id, score);
 `;
 
@@ -171,6 +173,7 @@ async function migrate(db) {
   }
   const messageColumns = (await db.all('PRAGMA table_info(messages)')).map(c => c.name);
   if (!messageColumns.includes('topic')) await db.exec("ALTER TABLE messages ADD COLUMN topic TEXT NOT NULL DEFAULT 'general'");
+  if (!messageColumns.includes('subject')) await db.exec('ALTER TABLE messages ADD COLUMN subject TEXT');
   await db.exec(`
     DROP INDEX IF EXISTS idx_scores_game_score;
     CREATE INDEX IF NOT EXISTS idx_scores_game_user ON scores (game, user_id, score);

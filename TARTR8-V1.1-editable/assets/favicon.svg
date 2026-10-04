@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="88 72 1056 1056">
-  <circle cx="616" cy="600" r="528" fill="#fff"/>
-  <polygon points="365,465 616,224 857,475 606,716" fill="#000"/>
-  <polygon points="379,721 629,490 870,741 620,972" fill="#000"/>
-  <polygon points="363,721 762,368 872,476 478,832" fill="#e09006"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="91 92 1060 1060">
+  <defs><clipPath id="t"><rect x="91" y="92" width="1060" height="1060" rx="190"/></clipPath></defs>
+  <rect x="91" y="92" width="1060" height="1060" rx="190" fill="#fff"/>
+  <g clip-path="url(#t)">
+    <polygon points="627,20 885,255 443,647 185,412" fill="#000"/>
+    <polygon points="823,620 1077,864 593,1225 339,981" fill="#000"/>
+    <polygon points="165,822 885,255 1075,440 351,997" fill="#eaa007"/>
+  </g>
 </svg>

@@ -153,8 +153,11 @@ test('contact form validates and saves', async () => {
   assert.equal((await c.post('/api/contact', { name: 'Ada', email: 'bad', message: 'Hello there TARTR8' })).status, 400);
   assert.equal((await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'short' })).status, 400);
   assert.equal((await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'Hello there TARTR8' })).status, 201);
-  assert.equal((await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'Can you fix my laptop?', topic: 'repairs' })).status, 201);
-  assert.equal((await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'Unknown topic falls back', topic: 'hacking' })).status, 201);
+  const web = await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'I need a new website.', topic: 'web' });
+  assert.equal(web.status, 201);
+  assert.equal(web.body.subject, 'Web Development enquiry');
+  const unknown = await c.post('/api/contact', { name: 'Ada', email: 'ada@example.com', message: 'Unknown topic falls back', topic: 'hacking' });
+  assert.equal(unknown.body.subject, 'Other enquiry');
 });
 
 test('malformed JSON returns 400', async () => {

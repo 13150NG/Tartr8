@@ -3,9 +3,9 @@ const express = require('express');
 const GAMES = require('./games');
 const { createAuth, publicUser, EMAIL_RE } = require('./auth');
 const { sqlTime } = require('./db');
+const { TOPICS, subjectFor } = require('./topics');
 
 const ROOT = path.join(__dirname, '..');
-const TOPICS = ['general', 'services', 'products', 'repairs', 'collaboration'];
 
 // Small in-memory limiter: at most `max` requests per `windowMs` per IP.
 function rateLimit({ windowMs, max, enabled = true }) {
@@ -127,9 +127,10 @@ function createApp(db, { rateLimits = true } = {}) {
     if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'Please enter a valid email address.' });
     if (message.length < 10) return res.status(400).json({ error: 'Message must be at least 10 characters.' });
 
-    const topic = TOPICS.includes(req.body?.topic) ? req.body.topic : 'general';
-    await db.run('INSERT INTO messages (name, email, message, topic, created_at) VALUES (?, ?, ?, ?, ?)', [name, email, message, topic, sqlTime()]);
-    res.status(201).json({ ok: true });
+    const topic = req.body?.topic in TOPICS ? req.body.topic : 'other';
+    const subject = subjectFor(topic);
+    await db.run('INSERT INTO messages (name, email, subject, message, topic, created_at) VALUES (?, ?, ?, ?, ?, ?)', [name, email, subject, message, topic, sqlTime()]);
+    res.status(201).json({ ok: true, subject });
   });
 
   api.use((req, res) => res.status(404).json({ error: 'Not found.' }));
@@ -138,7 +139,8 @@ function createApp(db, { rateLimits = true } = {}) {
   // Serve only the public site files — never server code, the database or package files.
   for (const dir of ['css', 'js', 'assets']) app.use('/' + dir, express.static(path.join(ROOT, dir), { maxAge: dir === 'assets' ? '7d' : 0 }));
   app.get(['/', '/index.html'], (req, res) => res.sendFile(path.join(ROOT, 'index.html')));
-  for (const file of ['game.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest']) {
+  app.get(['/store', '/store/'], (req, res) => res.sendFile(path.join(ROOT, 'store.html')));
+  for (const file of ['game.html', 'store.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest']) {
     app.get('/' + file, (req, res) => res.sendFile(path.join(ROOT, file)));
   }
   // Unknown pages get a real 404 (not the homepage), so search engines don't index duplicates.

@@ -153,7 +153,10 @@ const contactSent = document.getElementById('contactSent');
 const charCount = document.getElementById('charCount');
 
 contactForm.elements.message.addEventListener('input', () => { charCount.textContent = contactForm.elements.message.value.length; });
-contactForm.addEventListener('input', e => e.target.classList.remove('invalid'));
+contactForm.addEventListener('input', e => {
+  e.target.classList.remove('invalid');
+  if (e.target.name === 'topic') contactForm.querySelector('.topic-chips').classList.remove('invalid');
+});
 
 contactForm.addEventListener('submit', async e => {
   e.preventDefault();
@@ -162,15 +165,18 @@ contactForm.addEventListener('submit', async e => {
 
   // Quick checks before hitting the server, so the problem field can be highlighted.
   const problems = [
+    [!data.topic, 'topic', 'Please choose what your message is about.'],
     [!data.name.trim(), 'name', 'Please enter your name.'],
     [!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim()), 'email', 'Please enter a valid email address.'],
     [data.message.trim().length < 10, 'message', 'Message must be at least 10 characters.']
   ].filter(([bad]) => bad);
   if (problems.length) {
-    problems.forEach(([, field]) => contactForm.elements[field].classList.add('invalid'));
+    problems.forEach(([, field]) => field === 'topic'
+      ? contactForm.querySelector('.topic-chips').classList.add('invalid')
+      : contactForm.elements[field].classList.add('invalid'));
     msg.className = 'form-msg bad';
     msg.textContent = problems[0][2];
-    contactForm.elements[problems[0][1]].focus();
+    (problems[0][1] === 'topic' ? contactForm.querySelector('input[name=topic]') : contactForm.elements[problems[0][1]]).focus();
     return;
   }
 
@@ -180,6 +186,7 @@ contactForm.addEventListener('submit', async e => {
   try {
     await apiRequest('/contact', data);
     contactForm.reset();
+    autoMessage = '';
     charCount.textContent = 0;
     msg.textContent = '';
     contactForm.hidden = true;
@@ -192,15 +199,31 @@ contactForm.addEventListener('submit', async e => {
   btn.disabled = false;
 });
 
-// Service buttons in the Tech section pre-fill the contact form.
-document.querySelectorAll('a[data-topic]').forEach(link => link.addEventListener('click', () => {
-  const radio = contactForm.querySelector(`input[name=topic][value="${link.dataset.topic}"]`);
-  if (radio) radio.checked = true;
+// Choosing a service (a topic button, or "Ask about this" on a service card) pre-fills the message.
+// The text follows the chosen service until the visitor writes their own message.
+let autoMessage = '';
+function prefillFor(topic) {
   const message = contactForm.elements.message;
-  if (link.dataset.message && !message.value.trim()) {
-    message.value = link.dataset.message;
+  const radio = contactForm.querySelector(`input[name=topic][value="${topic}"]`);
+  if (!radio) return;
+  const label = radio.nextElementSibling.textContent.trim();
+  const text = topic === 'other' ? '' : `Hi TARTR8, may I request for more information on ${label}.`;
+  if (message.value.trim() === '' || message.value === autoMessage) {
+    message.value = text;
+    autoMessage = text;
     charCount.textContent = message.value.length;
   }
+}
+contactForm.querySelectorAll('input[name=topic]').forEach(radio => radio.addEventListener('change', () => prefillFor(radio.value)));
+
+document.querySelectorAll('a[data-topic]').forEach(link => link.addEventListener('click', () => {
+  const radio = contactForm.querySelector(`input[name=topic][value="${link.dataset.topic}"]`);
+  if (radio) {
+    radio.checked = true;
+    contactForm.querySelector('.topic-chips').classList.remove('invalid');
+    prefillFor(radio.value);
+  }
+  const message = contactForm.elements.message;
   if (!document.documentElement.classList.contains('online')) return; // offline: the email link is shown instead
   contactSent.hidden = true;
   contactForm.hidden = false;
@@ -211,6 +234,17 @@ document.querySelectorAll('a[data-topic]').forEach(link => link.addEventListener
     if (target === message) message.setSelectionRange(message.value.length, message.value.length);
   }, 600);
 }));
+
+// Arriving from the Store page's "Notify me" link: pre-fill the contact form.
+if (new URLSearchParams(location.search).get('notify') === 'store') {
+  apiReady.then(online => {
+    if (!online) return;
+    contactForm.querySelector('input[name=topic][value="other"]').checked = true;
+    contactForm.elements.message.value = "Hi TARTR8, please let me know when the store opens.";
+    charCount.textContent = contactForm.elements.message.value.length;
+    setTimeout(() => contactForm.elements.name.focus({ preventScroll: true }), 600);
+  });
+}
 
 document.getElementById('sendAnother').addEventListener('click', () => {
   contactSent.hidden = true;

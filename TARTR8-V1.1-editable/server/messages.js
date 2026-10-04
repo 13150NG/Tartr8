@@ -8,7 +8,8 @@ const { openDatabase } = require('./db');
 
   if (!rows.length) console.log('No messages yet.');
   for (const m of rows) {
-    console.log(`#${m.id}  ${m.created_at}  [${m.topic}]  ${m.name} <${m.email}>`);
+    console.log(`#${m.id}  ${m.created_at}  ${m.name} <${m.email}>`);
+    console.log(`    Subject: ${m.subject || m.topic}`);
     console.log(m.message.replace(/^/gm, '    '));
     console.log();
   }
