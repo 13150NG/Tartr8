@@ -2,20 +2,27 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "node scripts/build-public.js",
   "outputDirectory": "public",
-  "routes": [
+  "redirects": [
     {
-      "src": "/(.*)",
-      "has": [{ "type": "host", "value": "(.*)\\.vercel\\.app" }],
-      "headers": { "X-Robots-Tag": "noindex, nofollow" },
-      "continue": true
+      "source": "/",
+      "destination": "https://tartr8.com/",
+      "permanent": true
     },
-    { "src": "/assets/(.*)", "headers": { "Cache-Control": "public, max-age=604800" }, "continue": true },
-    { "src": "/api(?:/.*)?", "dest": "/api" },
-    { "src": "/store/?", "dest": "/store.html" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
+    {
+      "source": "/:path*",
+      "destination": "https://tartr8.com/:path*",
+      "permanent": true
+    }
   ],
-  "functions": {
-    "api/index.js": { "maxDuration": 30 }
-  }
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
+  ]
 }
