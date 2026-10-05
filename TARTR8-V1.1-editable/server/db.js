@@ -25,17 +25,18 @@ const plainRow = row => {
 
 function sqliteDriver(file) {
   if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
-  let Database;
+  let db;
   try {
     if (process.env.SQLITE_DRIVER === 'node') throw new Error('forced');
-    Database = require('better-sqlite3');
+    const Database = require('better-sqlite3');
+    // The compiled add-on is only loaded here, on first open, so a failure can surface at this
+    // point (e.g. "GLIBC_2.29 not found" on older CloudLinux servers) rather than at require().
+    db = new Database(file);
   } catch (err) {
-    // better-sqlite3 is a compiled add-on; on some shared hosts it can't load.
     // Node 22.5+ ships SQLite built in, which needs nothing compiled.
     if (err.message !== 'forced') console.warn(`better-sqlite3 unavailable (${err.message.split('\n')[0]}); using built-in node:sqlite`);
     return nodeSqliteDriver(file);
   }
-  const db = new Database(file);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   return {
