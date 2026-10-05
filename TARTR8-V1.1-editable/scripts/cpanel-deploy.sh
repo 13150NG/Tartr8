@@ -38,8 +38,11 @@ LOG "Files copied"
 APP_NAME="$(basename "$APP_DIR")"
 ACTIVATE="$(ls -d "$HOME"/nodevenv/"$APP_NAME"/*/bin/activate 2>/dev/null | sort -V | tail -n 1 || true)"
 if [ -n "$ACTIVATE" ]; then
+  # CloudLinux's activate script reads variables that may be unset, so relax `set -u` while sourcing it.
+  set +u
   # shellcheck disable=SC1090
   source "$ACTIVATE"
+  set -u
   LOG "Node $(node -v) from $(dirname "$(dirname "$ACTIVATE")")"
   cd "$APP_DIR"
   npm install --omit=dev --no-audit --no-fund
