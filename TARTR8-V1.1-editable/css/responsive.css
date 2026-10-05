@@ -8,7 +8,7 @@
 /* ---------- Small laptop / tablet landscape ---------- */
 @media (max-width: 1000px) {
   .nav { gap: 22px; }
-  .brand img { height: 42px; width: auto; }
+  .brand img { height: 36px; width: auto; }
   .about-section { gap: 40px; }
   .contact-section { gap: 40px; }
   .footer-main { grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 28px; }
@@ -54,9 +54,9 @@
   .nav.mobile a.active { color: var(--accent); }
   .nav.mobile .nav-store { display: block; color: var(--accent); }
 
-  .hero { grid-template-columns: 1fr; padding-top: 50px; min-height: 0; gap: 10px; }
+  .hero { grid-template-columns: 1fr; padding-top: 32px; padding-bottom: 24px; gap: 0; }
   .hero-copy > p { font-size: 16px; }
-  .hero-visual { height: 400px; margin-top: 10px; }
+  .hero-visual { height: 360px; margin-top: 0; }
   .hero-stage { width: min(300px, 70%); }
   .orb-a { width: 260px; height: 260px; }
   .orb-b { width: 360px; height: 360px; }
@@ -64,16 +64,16 @@
   .chip-games { left: -12%; }
   .chip-rank { right: -2%; }
   .scroll-cue { display: none; }
-  .hero-stats { gap: 22px; margin-top: 36px; }
+  .hero-stats { gap: 22px; margin-top: 28px; }
 
-  .section { padding-block: 80px; }
-  .section-heading { display: block; margin-bottom: 36px; }
+  .section { padding-block: 32px 48px; }
+  .section-heading { display: block; margin-bottom: 24px; }
   .section-heading > p { margin-top: 18px; }
 
   .challenge-strip { grid-template-columns: 1fr; gap: 10px; }
 
   .about-section { grid-template-columns: 1fr; gap: 30px; }
-  .about-visual { max-width: 320px; }
+  .about-visual { max-width: 320px; order: 2; } /* text first on small screens */
   .about-chip.c2 { right: 0; }
 
   .contact-section { grid-template-columns: 1fr; gap: 40px; }
@@ -89,7 +89,7 @@
 
 /* ---------- Phones ---------- */
 @media (max-width: 600px) {
-  .section { padding-block: 64px; }
+  .section { padding-block: 28px 40px; }
 
   .ticker { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; }
 
@@ -169,7 +169,7 @@
   .hero-chip { padding: 7px 10px 7px 7px; gap: 8px; }
   .chip-icon { width: 26px; height: 26px; }
   .hero-chip strong { font-size: 12px; }
-  .hero-visual { height: 380px; }
+  .hero-visual { height: 340px; }
   .hero-stage { width: min(270px, 76%); }
   .chip-games { display: none; }
   .chip-champ { top: -13%; right: -8%; }
@@ -178,7 +178,7 @@
 
 /* ---------- Small phones ---------- */
 @media (max-width: 380px) {
-  .brand img { height: 36px; width: auto; }
+  .brand img { height: 32px; width: auto; }
   .header-actions { gap: 8px; }
   .account-btn { padding: 0 10px; }
   .hero-actions { flex-direction: column; }

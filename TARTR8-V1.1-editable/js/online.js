@@ -242,7 +242,7 @@ if (new URLSearchParams(location.search).get('notify') === 'store') {
     contactForm.querySelector('input[name=topic][value="other"]').checked = true;
     contactForm.elements.message.value = "Hi TARTR8, please let me know when the store opens.";
     charCount.textContent = contactForm.elements.message.value.length;
-    setTimeout(() => contactForm.elements.name.focus({ preventScroll: true }), 600);
+    setTimeout(() => contactForm.elements.name.focus({ preventScroll: true }), 700);
   });
 }
 
@@ -253,3 +253,18 @@ document.getElementById('sendAnother').addEventListener('click', () => {
 });
 
 authReady.then(() => apiReady).then(online => { if (online) loadLeaderboard(); });
+
+// Links like /?notify=store#contact arrive before the leaderboard and contact form have rendered,
+// so the browser's own jump to the section misses. Scroll there once the page has settled.
+if (location.hash.length > 1) {
+  const wanted = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+  if (wanted) {
+    // A hidden target (e.g. the contact form in offline mode) falls back to its section.
+    const target = () => (wanted.hidden || !wanted.offsetParent) ? wanted.closest('section') || wanted : wanted;
+    const go = () => target().scrollIntoView({ behavior: 'instant', block: 'start' });
+    authReady.then(() => apiReady).then(() => {
+      requestAnimationFrame(go);
+      setTimeout(go, 400); // once more after web fonts and late layout changes
+    });
+  }
+}

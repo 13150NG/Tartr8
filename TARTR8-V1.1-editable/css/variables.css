@@ -13,7 +13,7 @@
   --bad: #ff5a4f;
   --content-width: 1180px;
   --side-padding: 6vw;
-  --header-height: 76px;
+  --header-height: 62px;
   /* Horizontal padding that keeps content inside --content-width on wide screens */
   --gutter: max(var(--side-padding), calc((100% - var(--content-width)) / 2));
   --font-body: "Space Grotesk", Arial, sans-serif;

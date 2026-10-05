@@ -14,7 +14,7 @@
   -webkit-backdrop-filter: blur(14px);
   z-index: 20;
 }
-.brand img { height: 46px; width: auto; display: block; }
+.brand img { height: 38px; width: auto; display: block; }
 
 .nav { display: flex; gap: 32px; color: #aeb5bd; font-size: 14px; }
 .nav a { position: relative; padding: 6px 0; transition: color .2s; }
@@ -37,7 +37,7 @@
   font-size: 13px;
   font-weight: 600;
   border: 1px solid var(--line-strong);
-  padding: 10px 15px;
+  padding: 8px 14px;
   transition: border-color .2s, color .2s;
   white-space: nowrap;
 }
@@ -68,7 +68,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 40px;
+  height: 36px;
   background: none;
   border: 1px solid var(--line-strong);
   color: var(--text);
@@ -81,7 +81,7 @@
 }
 .account-btn:hover { border-color: var(--accent); color: var(--accent); }
 .account-btn.signed-in { padding-left: 5px; }
-.avatar { width: 28px; height: 28px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 13px; }
+.avatar { width: 26px; height: 26px; display: grid; place-items: center; background: var(--accent); color: var(--on-accent); font-weight: 700; font-size: 13px; }
 .account-name { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-menu {
   position: absolute;

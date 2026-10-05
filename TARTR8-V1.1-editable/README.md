@@ -49,11 +49,9 @@ How it works: `npm run build` copies only the public site files into `public/`, 
 
 ## Deploying to cPanel
 
-Use cPanel's **Setup Node.js App**: application root = this folder, startup file = `server/index.js`, then run `npm install`.
-Leave the Turso variables unset and the app uses the SQLite file, which persists on cPanel's disk.
-
-You can still open `index.html` directly in a browser. The games work offline;
-the leaderboard and contact form are hidden and the plain email link is shown instead.
+Automated: every push to `master` runs the tests, then deploys through cPanel's Git Version Control
+(`.cpanel.yml` → `scripts/cpanel-deploy.sh`). See **[DEPLOY-CPANEL.md](../DEPLOY-CPANEL.md)** for the one-time setup.
+Without `DATABASE_URL`/`TURSO_DATABASE_URL` the app uses the SQLite file (set `DB_FILE` to keep it outside the app folder).
 
 ## Frontend (editable files)
 - `index.html` — page content and navigation

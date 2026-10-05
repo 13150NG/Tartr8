@@ -1,7 +1,6 @@
 /* HOME / TECH / ABOUT / CONTACT */
 .hero {
-  min-height: calc(100vh - var(--header-height));
-  padding: 8vh var(--gutter);
+  padding: 40px var(--gutter) 48px;
   padding-left: clamp(16px, 8vw, 128px); /* left indent of the hero text — raise to move it right */
   display: grid;
   grid-template-columns: 1.05fr .95fr;
@@ -32,12 +31,12 @@
 .btn-ghost { color: #d9dde1; border-color: var(--line-strong); }
 .btn-ghost:hover { border-color: var(--text); color: var(--text); }
 
-.hero-stats { display: flex; gap: 40px; margin-top: 52px; }
+.hero-stats { display: flex; gap: 40px; margin-top: 36px; }
 .hero-stats div { display: flex; flex-direction: column; }
 .hero-stats strong { font-size: 24px; }
 .hero-stats span { font-size: 10px; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
 
-.hero-visual { height: 560px; position: relative; display: grid; place-items: center; perspective: 1200px; --mx: 0; --my: 0; }
+.hero-visual { height: 500px; position: relative; display: grid; place-items: center; perspective: 1200px; --mx: 0; --my: 0; }
 .grid-plane {
   position: absolute;
   width: 130%;
@@ -213,7 +212,7 @@ a.pill-tag:hover { background: var(--accent-soft); transform: translateY(-1px); 
 .ticker .accent { stroke: var(--accent); }
 .ticker .accent-fill { fill: var(--accent); stroke: var(--accent); }
 
-.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 55px; }
+.section-heading { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 32px; }
 .section-heading h2 { margin-bottom: 0; }
 .section-heading > p { max-width: 350px; color: var(--muted); font-size: 14px; margin: 0; }
 
@@ -276,7 +275,7 @@ a.pill-tag:hover { background: var(--accent-soft); transform: translateY(-1px); 
   display: grid;
   grid-template-columns: .85fr 1.15fr;
   gap: 70px;
-  align-items: center;
+  align-items: start;
   overflow: hidden;
 }
 
@@ -361,7 +360,7 @@ a.pill-tag:hover { background: var(--accent-soft); transform: translateY(-1px); 
   display: grid;
   grid-template-columns: 1fr 1.05fr;
   gap: 60px;
-  align-items: center;
+  align-items: start;
   border-top: 1px solid var(--line);
   background: linear-gradient(180deg, transparent, #0a0c0f);
 }
@@ -464,7 +463,7 @@ a.pill-tag:hover { background: var(--accent-soft); transform: translateY(-1px); 
 /* Call-to-action banner */
 .footer-cta {
   position: relative;
-  margin-top: 44px;
+  margin-top: 36px;
   padding: 26px 32px;
   display: flex;
   align-items: center;
@@ -656,7 +655,7 @@ a.pill-tag:hover { background: var(--accent-soft); transform: translateY(-1px); 
 
 /* LEADERBOARD (shown only when the backend is running) */
 .leaderboard-section { border-top: 1px solid var(--line); background: radial-gradient(ellipse 60% 50% at 30% 30%, #e77b000d, transparent 70%); }
-.lb-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.lb-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
 .lb-tabs button {
   display: inline-flex;
   align-items: center;
