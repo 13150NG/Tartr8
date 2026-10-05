@@ -1,7 +1,7 @@
 /* GAME CARDS + GAME MODAL */
 .game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
 .game-card {
-  min-height: 330px;
+  min-height: 280px;
   border: 1px solid var(--line);
   background: var(--panel);
   padding: 28px 28px 70px;
@@ -33,7 +33,7 @@
 .game-icon .on-lit { stroke: #fff; }
 .game-card:hover .game-icon { border-color: var(--accent); color: var(--text); }
 .game-number { position: absolute; right: 25px; top: 27px; color: #7a838d; font-size: 11px; }
-.game-card h3 { font-family: var(--font-display); font-size: 32px; margin: 36px 0 8px; }
+.game-card h3 { font-family: var(--font-display); font-size: 30px; margin: 22px 0 8px; }
 .game-card p { color: var(--muted); font-size: 14px; max-width: 250px; margin: 0; }
 .game-best { margin-top: 14px; font-size: 11px; letter-spacing: .12em; color: var(--accent-soft); text-transform: uppercase; }
 .game-best:empty { display: none; }

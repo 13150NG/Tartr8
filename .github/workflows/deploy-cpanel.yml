@@ -1,0 +1,81 @@
+# Test, then deploy to cPanel on every push to master (or run it manually from the Actions tab).
+#
+# Required repository secrets (GitHub > Settings > Secrets and variables > Actions):
+#   CPANEL_HOST       cPanel hostname, e.g. server123.yourhost.com (no https://, no port)
+#   CPANEL_USER       cPanel username
+#   CPANEL_API_TOKEN  cPanel > Security > Manage API Tokens
+#   CPANEL_REPO_PATH  Repository path from cPanel > Git Version Control, e.g. /home/user/repositories/Tartr8
+name: Deploy to cPanel
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: cpanel-deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: TARTR8-V1.1-editable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: TARTR8-V1.1-editable/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Pull latest commit into the cPanel repository
+        env:
+          HOST: ${{ secrets.CPANEL_HOST }}
+          USER: ${{ secrets.CPANEL_USER }}
+          TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          REPO: ${{ secrets.CPANEL_REPO_PATH }}
+        run: |
+          set -euo pipefail
+          api() { curl -sS --fail-with-body -H "Authorization: cpanel $USER:$TOKEN" "https://$HOST:2083/execute/$1" "${@:2}"; }
+          out=$(api VersionControl/update --get --data-urlencode "repository_root=$REPO" --data-urlencode "branch=master")
+          echo "$out" | jq '{status, errors, head: .data.last_update.identifier}'
+          [ "$(echo "$out" | jq -r .status)" = "1" ] || { echo "::error::cPanel pull failed"; exit 1; }
+
+      - name: Run the cPanel deployment (.cpanel.yml)
+        env:
+          HOST: ${{ secrets.CPANEL_HOST }}
+          USER: ${{ secrets.CPANEL_USER }}
+          TOKEN: ${{ secrets.CPANEL_API_TOKEN }}
+          REPO: ${{ secrets.CPANEL_REPO_PATH }}
+        run: |
+          set -euo pipefail
+          api() { curl -sS --fail-with-body -H "Authorization: cpanel $USER:$TOKEN" "https://$HOST:2083/execute/$1" "${@:2}"; }
+          out=$(api VersionControlDeployment/create --get --data-urlencode "repository_root=$REPO")
+          [ "$(echo "$out" | jq -r .status)" = "1" ] || { echo "$out" | jq .; echo "::error::Could not start deployment"; exit 1; }
+          id=$(echo "$out" | jq -r .data.deploy_id)
+          echo "Deployment $id started"
+          for i in $(seq 1 60); do
+            sleep 5
+            d=$(api VersionControlDeployment/retrieve | jq --arg id "$id" '.data[] | select((.deploy_id|tostring) == $id)')
+            if [ "$(echo "$d" | jq -r '.timestamps.succeeded // empty')" != "" ]; then echo "Deployment succeeded"; exit 0; fi
+            if [ "$(echo "$d" | jq -r '.timestamps.failed // empty')" != "" ]; then
+              echo "::error::Deployment failed. Log on the server: $(echo "$d" | jq -r .log_path)"; exit 1
+            fi
+          done
+          echo "::error::Timed out waiting for the deployment"; exit 1
+
+      - name: Smoke test the live site
+        if: ${{ vars.SITE_URL != '' }}
+        run: |
+          curl -sSf "${{ vars.SITE_URL }}/api/health"
+          curl -sSf -o /dev/null "${{ vars.SITE_URL }}/"
+          echo "Live site is up"

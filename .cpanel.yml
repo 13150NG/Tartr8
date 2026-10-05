@@ -1,0 +1,8 @@
+# cPanel "Git Version Control" deployment.
+# cPanel runs these tasks from the repository root after a pull, when you click
+# "Deploy HEAD Commit" or when the GitHub Actions workflow triggers a deployment.
+# All logic lives in the script so it can be read, tested and versioned like any code.
+---
+deployment:
+  tasks:
+    - /bin/bash TARTR8-V1.1-editable/scripts/cpanel-deploy.sh
