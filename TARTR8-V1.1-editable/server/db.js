@@ -24,8 +24,17 @@ const plainRow = row => {
 };
 
 function sqliteDriver(file) {
-  const Database = require('better-sqlite3');
   if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
+  let Database;
+  try {
+    if (process.env.SQLITE_DRIVER === 'node') throw new Error('forced');
+    Database = require('better-sqlite3');
+  } catch (err) {
+    // better-sqlite3 is a compiled add-on; on some shared hosts it can't load.
+    // Node 22.5+ ships SQLite built in, which needs nothing compiled.
+    if (err.message !== 'forced') console.warn(`better-sqlite3 unavailable (${err.message.split('\n')[0]}); using built-in node:sqlite`);
+    return nodeSqliteDriver(file);
+  }
   const db = new Database(file);
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
@@ -36,6 +45,24 @@ function sqliteDriver(file) {
     async run(sql, params = []) {
       const r = db.prepare(sql).run(params);
       return { lastInsertRowid: Number(r.lastInsertRowid), changes: r.changes };
+    },
+    async exec(sql) { db.exec(sql); },
+    async close() { db.close(); }
+  };
+}
+
+function nodeSqliteDriver(file) {
+  const { DatabaseSync } = require('node:sqlite');
+  const db = new DatabaseSync(file);
+  db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+  const prep = sql => db.prepare(sql);
+  return {
+    kind: 'sqlite',
+    async all(sql, params = []) { return prep(sql).all(...params).map(plainRow); },
+    async get(sql, params = []) { return plainRow(prep(sql).get(...params)); },
+    async run(sql, params = []) {
+      const r = prep(sql).run(...params);
+      return { lastInsertRowid: Number(r.lastInsertRowid), changes: Number(r.changes) };
     },
     async exec(sql) { db.exec(sql); },
     async close() { db.close(); }

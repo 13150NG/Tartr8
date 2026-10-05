@@ -6,7 +6,8 @@ const { createApp } = require('../server/app');
 let server, base;
 
 // TEST_DRIVER picks the database: sqlite (default), libsql (Turso driver) or postgres (in-memory PGlite).
-const DRIVERS = { sqlite: { file: ':memory:' }, libsql: { tursoUrl: ':memory:' }, postgres: { pglite: true } };
+const DRIVERS = { sqlite: { file: ':memory:' }, nodesqlite: { file: ':memory:' }, libsql: { tursoUrl: ':memory:' }, postgres: { pglite: true } };
+if (process.env.TEST_DRIVER === 'nodesqlite') process.env.SQLITE_DRIVER = 'node';
 before(async () => {
   const db = await openDatabase(DRIVERS[process.env.TEST_DRIVER || 'sqlite']);
   const app = createApp(db, { rateLimits: false });
