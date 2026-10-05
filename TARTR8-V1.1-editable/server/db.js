@@ -24,9 +24,19 @@ const plainRow = row => {
 };
 
 function sqliteDriver(file) {
-  const Database = require('better-sqlite3');
   if (file !== ':memory:') fs.mkdirSync(path.dirname(file), { recursive: true });
-  const db = new Database(file);
+  let db;
+  try {
+    if (process.env.SQLITE_DRIVER === 'node') throw new Error('forced');
+    const Database = require('better-sqlite3');
+    // The compiled add-on is only loaded here, on first open, so a failure can surface at this
+    // point (e.g. "GLIBC_2.29 not found" on older CloudLinux servers) rather than at require().
+    db = new Database(file);
+  } catch (err) {
+    // Node 22.5+ ships SQLite built in, which needs nothing compiled.
+    if (err.message !== 'forced') console.warn(`better-sqlite3 unavailable (${err.message.split('\n')[0]}); using built-in node:sqlite`);
+    return nodeSqliteDriver(file);
+  }
   db.pragma('journal_mode = WAL');
   db.pragma('foreign_keys = ON');
   return {
@@ -36,6 +46,24 @@ function sqliteDriver(file) {
     async run(sql, params = []) {
       const r = db.prepare(sql).run(params);
       return { lastInsertRowid: Number(r.lastInsertRowid), changes: r.changes };
+    },
+    async exec(sql) { db.exec(sql); },
+    async close() { db.close(); }
+  };
+}
+
+function nodeSqliteDriver(file) {
+  const { DatabaseSync } = require('node:sqlite');
+  const db = new DatabaseSync(file);
+  db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+  const prep = sql => db.prepare(sql);
+  return {
+    kind: 'sqlite',
+    async all(sql, params = []) { return prep(sql).all(...params).map(plainRow); },
+    async get(sql, params = []) { return plainRow(prep(sql).get(...params)); },
+    async run(sql, params = []) {
+      const r = prep(sql).run(...params);
+      return { lastInsertRowid: Number(r.lastInsertRowid), changes: Number(r.changes) };
     },
     async exec(sql) { db.exec(sql); },
     async close() { db.close(); }
