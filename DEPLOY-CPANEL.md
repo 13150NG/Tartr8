@@ -106,11 +106,40 @@ GitHub → **Actions → Deploy to cPanel → Run workflow**, or push a commit t
 ## Good to know
 
 - **The database is safe across deploys.** It lives in `~/tartr8-data/`, outside the app folder, and the
-  deploy script never touches `server/data` either. Back up `~/tartr8-data/tartr8.db` regularly,
-  for example with cPanel's Backup tool or a daily cron job copying it.
+  deploy script never touches `server/data` either. Back it up daily with the cron job below.
 - **A failed test means no deploy.** The site keeps running the previous version.
 - **To change the app folder,** set `APP_DIR` in Setup Node.js App's environment variables and use the
   same folder as the Application root.
 - **Reading contact messages on cPanel:** in Terminal, run
   `source ~/nodevenv/tartr8/*/bin/activate && cd ~/tartr8 && DB_FILE=~/tartr8-data/tartr8.db npm run messages`.
 - **Vercel keeps working separately** (`npm run deploy:vercel`) with its own Neon database.
+
+## Daily database backup
+
+`scripts/backup-db.js` saves a compressed snapshot of the database to `~/tartr8-backups/tartr8-YYYY-MM-DD.db.gz`
+and keeps the newest 14. It uses SQLite's `VACUUM INTO`, so the copy is consistent even while players are
+posting scores (a plain `cp` can catch the database mid-write), opens the live file read-only, and checks
+each backup's integrity before keeping it.
+
+**Set it up once:** cPanel → **Advanced → Cron Jobs → Add New Cron Job**
+- **Common settings:** Once Per Day (`0 3 * * *`, 3 am server time)
+- **Command** (replace `<cpanel-user>` with your cPanel username):
+  ```
+  DB_FILE=/home/<cpanel-user>/tartr8-data/tartr8.db /home/<cpanel-user>/nodevenv/tartr8/22/bin/node /home/<cpanel-user>/tartr8/scripts/backup-db.js >> /home/<cpanel-user>/tartr8-backup.log 2>&1
+  ```
+  Use the Node.js version folder that exists in `~/nodevenv/tartr8/` if it isn't `22`.
+- Optional: put your email in **Cron Email** at the top of the page to be told when a backup fails.
+
+Test it in Terminal by running the same command once, then `tail ~/tartr8-backup.log` and `ls ~/tartr8-backups`.
+Optional settings, added in front of the command: `BACKUP_KEEP=30` to keep more days, `BACKUP_DIR=/path` to save elsewhere.
+
+**Restore a backup:** in cPanel → **Setup Node.js App**, stop the app, then
+```bash
+cp ~/tartr8-data/tartr8.db ~/tartr8-data/tartr8.db.before-restore
+gunzip -c ~/tartr8-backups/tartr8-YYYY-MM-DD.db.gz > ~/tartr8-data/tartr8.db
+rm -f ~/tartr8-data/tartr8.db-wal ~/tartr8-data/tartr8.db-shm
+```
+and start the app again.
+
+The backups sit on the same server as the database, so they don't survive losing the server. Every so often,
+download the newest one (cPanel → File Manager → `tartr8-backups`) and keep it somewhere else.

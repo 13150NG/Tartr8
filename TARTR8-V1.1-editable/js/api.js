@@ -198,10 +198,26 @@ async function offerScoreSubmit(slot, game, score) {
   if (!slot || !(score > 0) || !(await apiReady)) return;
   await authReady;
 
+  // A dropped connection, a host error page or a busy server usually clears within seconds,
+  // so retry those quietly. A 4xx answer (signed out, invalid score, too many requests) is final.
+  async function send() {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        return await apiRequest('/scores', { game, score });
+      } catch (err) {
+        if ((err.status >= 400 && err.status < 500) || attempt === 3) {
+          if (!err.status) err.message = 'Could not reach the server. Please try again.';
+          throw err;
+        }
+        await new Promise(r => setTimeout(r, attempt * 1500));
+      }
+    }
+  }
+
   async function post() {
     slot.innerHTML = `<div class="submit-score"><div class="submit-msg">Posting…</div></div>`;
     try {
-      const { rank, best, newBest } = await apiRequest('/scores', { game, score });
+      const { rank, best, newBest } = await send();
       const where = rank === 1 ? `You're the champion! 👑` : `You're #${rank} on the leaderboard.`;
       slot.innerHTML = `<div class="submit-score"><div class="submit-msg good">${newBest ? 'New best posted. ' : `Posted. Your best is still ${best}. `}${where}</div></div>`;
       document.dispatchEvent(new CustomEvent('tartr8:score', { detail: { game } }));
