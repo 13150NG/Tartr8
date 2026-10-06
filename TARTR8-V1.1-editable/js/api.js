@@ -188,8 +188,10 @@ function openAuth({ mode = 'signin', reason = '', onSuccess } = {}) {
   form.username.focus();
 }
 
-/* ---------- Post-game "post to leaderboard" ---------- */
+/* ---------- Post-game: post to the leaderboard ---------- */
 
+// Signed-in players' scores post automatically when a game ends. Guests are asked to create an
+// account after every game, and the score posts as soon as they have one.
 async function offerScoreSubmit(slot, game, score) {
   if (!slot || !(score > 0) || !(await apiReady)) return;
   await authReady;
@@ -202,18 +204,18 @@ async function offerScoreSubmit(slot, game, score) {
       slot.innerHTML = `<div class="submit-score"><div class="submit-msg good">${newBest ? 'New best posted. ' : `Posted. Your best is still ${best}. `}${where}</div></div>`;
       document.dispatchEvent(new CustomEvent('tartr8:score', { detail: { game } }));
     } catch (err) {
-      if (err.status === 401) { setUser(null); return render(); }
-      slot.innerHTML = `<div class="submit-score"><div class="submit-msg bad">${escapeHtml(err.message)}</div></div>`;
+      if (err.status === 401) { setUser(null); return askForAccount(); }
+      slot.innerHTML = `<div class="submit-score"><div class="submit-msg bad">${escapeHtml(err.message)}</div><button class="submit-btn">Try again</button></div>`;
+      slot.querySelector('.submit-btn').onclick = post;
     }
   }
 
-  function render() {
-    slot.innerHTML = currentUser
-      ? `<div class="submit-score"><span>Post to the leaderboard as <strong>${escapeHtml(currentUser.username)}</strong></span><button class="submit-btn">Post score</button></div>`
-      : `<div class="submit-score"><span>Sign in to put this score on the leaderboard.</span><button class="submit-btn">Sign in</button></div>`;
-    slot.querySelector('.submit-btn').onclick = () => currentUser
-      ? post()
-      : openAuth({ reason: `Sign in or create an account to post your ${score} score.`, onSuccess: post });
+  function askForAccount() {
+    const open = () => openAuth({ mode: 'register', reason: `Create an account to put your ${score} score on the leaderboard.`, onSuccess: post });
+    slot.innerHTML = `<div class="submit-score"><span>Create an account to put this score on the leaderboard.</span><button class="submit-btn">Create account</button></div>`;
+    slot.querySelector('.submit-btn').onclick = open;
+    open();
   }
-  render();
+
+  currentUser ? post() : askForAccount();
 }
