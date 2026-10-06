@@ -102,7 +102,8 @@ function createApp(db, { rateLimits = true } = {}) {
     res.json({ game: id, name: game.name, unit: game.unit, lowerIsBetter: game.lowerIsBetter, players: await q[id].players(), scores, me });
   });
 
-  api.post('/scores', rateLimit({ windowMs: 60_000, max: 20, enabled: rateLimits }), auth.requireUser, async (req, res) => {
+  // Scores post automatically after every game, and a Reaction round takes only a few seconds.
+  api.post('/scores', rateLimit({ windowMs: 60_000, max: 60, enabled: rateLimits }), auth.requireUser, async (req, res) => {
     const { game: id, score } = req.body || {};
     const game = GAMES[id];
     if (!game) return res.status(400).json({ error: 'Unknown game.' });
