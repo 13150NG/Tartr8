@@ -22,7 +22,9 @@ async function apiRequest(path, body) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   } : undefined);
-  const data = await res.json().catch(() => ({}));
+  const data = await res.json().catch(() => null);
+  // Anything but JSON (e.g. a host error or security page) means the request never reached the app.
+  if (!data) throw Object.assign(new Error('Could not reach the server. Please try again.'), { status: res.status });
   if (!res.ok) throw Object.assign(new Error(data.error || 'Could not reach the server.'), { field: data.field, status: res.status });
   return data;
 }
