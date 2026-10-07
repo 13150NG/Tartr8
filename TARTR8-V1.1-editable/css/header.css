@@ -9,14 +9,14 @@
   padding: 0 var(--gutter);
   position: sticky;
   top: 0;
-  background: rgba(7, 8, 10, .88);
+  background: var(--header-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 20;
 }
 .brand img { height: 38px; width: auto; display: block; }
 
-.nav { display: flex; gap: 32px; color: #aeb5bd; font-size: 14px; }
+.nav { display: flex; gap: 32px; color: var(--text-dim); font-size: 14px; }
 .nav a { position: relative; padding: 6px 0; transition: color .2s; }
 .nav a::after {
   content: "";
@@ -88,9 +88,9 @@
   right: 0;
   top: calc(100% + 10px);
   width: 260px;
-  background: #0b0e11;
+  background: var(--surface);
   border: 1px solid var(--line-strong);
-  box-shadow: 0 20px 50px #000c;
+  box-shadow: 0 20px 50px var(--shadow);
   padding: 16px;
   z-index: 30;
   animation: pop-in .18s ease-out;
@@ -103,6 +103,29 @@
 .account-bests li span { flex: 1; }
 .account-bests strong { color: var(--text); }
 .account-bests em { font-style: normal; color: var(--accent); font-weight: 700; font-size: 12px; }
-.account-bests small { color: #7a838d; }
+.account-bests small { color: var(--faint); }
 .account-signout { width: 100%; background: none; border: 1px solid var(--line-strong); color: var(--text); padding: 10px; font-weight: 600; cursor: pointer; }
 .account-signout:hover { border-color: var(--bad); color: var(--bad); }
+
+/* Light / dark switch (js/theme.js) */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: none;
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  padding: 0;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.theme-toggle svg { width: 18px; height: 18px; }
+.theme-toggle .icon-moon { display: none; }
+[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+/* The wordmark PNG has white lettering; --logo-filter darkens it in light mode. */
+.brand img, .footer-logo { filter: var(--logo-filter); }

@@ -1,16 +1,31 @@
 /* Edit TARTR8 brand colours and layout variables here. */
 :root {
+  color-scheme: dark;
   --bg: #07080a;
   --panel: #0d1014;
+  --panel-glass: #0d1014e6; /* translucent panels over decorative backgrounds */
+  --surface: #0a0c0f;       /* inputs, insets and darker bands */
+  --surface-2: #151a1e;     /* raised controls: game buttons, cells, avatars */
+  --featured-from: #17120c; /* warm gradient on featured cards */
+  --featured-to: #0c0e10;
+  --header-bg: rgba(7, 8, 10, .88);
+  --overlay: #000b;
+  --shadow: #000a;
+  --shadow-strong: #000;
   --line: #222830;
   --line-strong: #38404a;
   --text: #f2f4f5;
+  --text-soft: #c9cfd5;
+  --text-dim: #9ba4ae;
   --muted: #8f98a3;
+  --faint: #6d7680;
+  --stroke-faint: #ffffff1c;
   --accent: #e77b00;
   --accent-soft: #ffad55;
   --on-accent: #140b00; /* text on orange backgrounds — white fails contrast */
   --good: #27c46b;
   --bad: #ff5a4f;
+  --logo-filter: none;
   --content-width: 1180px;
   --side-padding: 6vw;
   --header-height: 62px;
@@ -18,4 +33,35 @@
   --gutter: max(var(--side-padding), calc((100% - var(--content-width)) / 2));
   --font-body: "Space Grotesk", Arial, sans-serif;
   --font-display: "Syne", Arial, sans-serif;
+}
+
+/* Light mode — set by js/theme.js via <html data-theme="light">. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f4f1;
+  --panel: #ffffff;
+  --panel-glass: #ffffffe6;
+  --surface: #efece8;
+  --surface-2: #e6e2dc;
+  --featured-from: #fff1e0;
+  --featured-to: #ffffff;
+  --header-bg: rgba(246, 244, 241, .88);
+  --overlay: #15181c80;
+  --shadow: #1a140c22;
+  --shadow-strong: #1a140c33;
+  --line: #e2ded8;
+  --line-strong: #c9c3bb;
+  --text: #15181c;
+  --text-soft: #353c43;
+  --text-dim: #535b64;
+  --muted: #5b636c;
+  --faint: #737b84;
+  --stroke-faint: #0000001a;
+  --accent: #c25e00;      /* darker orange so accent text stays readable on white */
+  --accent-soft: #e77b00;
+  --on-accent: #ffffff;
+  --good: #1a9a50;
+  --bad: #d93a2f;
+  /* The logo PNG has white lettering: invert it to dark, then rotate the hue so the orange stays orange. */
+  --logo-filter: invert(1) hue-rotate(180deg) saturate(1.4);
 }

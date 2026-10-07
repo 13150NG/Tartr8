@@ -192,8 +192,33 @@ function openAuth({ mode = 'signin', reason = '', onSuccess } = {}) {
 
 /* ---------- Post-game: post to the leaderboard ---------- */
 
-// Signed-in players' scores post automatically when a game ends. Guests are asked to create an
-// account after every game, and the score posts as soon as they have one.
+// Guests play as often as they like. Their best score per game is kept for this browser tab, and
+// a button under the game lets them create an account to post it whenever they choose.
+// Lower is better for these games — keep in step with server/games.js.
+const LOWER_IS_BETTER = { reaction: true };
+const GUEST_BEST_KEY = 'tartr8-guest-best';
+
+function guestBests() {
+  try { return JSON.parse(sessionStorage.getItem(GUEST_BEST_KEY)) || {}; } catch { return {}; }
+}
+function saveGuestBests(bests) {
+  try { sessionStorage.setItem(GUEST_BEST_KEY, JSON.stringify(bests)); } catch { /* private mode: best lasts for this page only */ }
+}
+let guestBestCache = guestBests();
+function recordGuestScore(game, score) {
+  const best = guestBestCache[game];
+  const better = best === undefined || (LOWER_IS_BETTER[game] ? score < best : score > best);
+  if (better) { guestBestCache = { ...guestBestCache, [game]: score }; saveGuestBests(guestBestCache); }
+  return guestBestCache[game];
+}
+function clearGuestScore(game) {
+  const { [game]: _, ...rest } = guestBestCache;
+  guestBestCache = rest;
+  saveGuestBests(rest);
+}
+const formatScore = (game, score) => LOWER_IS_BETTER[game] ? `${score}ms` : String(score);
+
+// Signed-in players' scores post automatically when a game ends.
 async function offerScoreSubmit(slot, game, score) {
   if (!slot || !(score > 0) || !(await apiReady)) return;
   await authReady;
@@ -218,22 +243,32 @@ async function offerScoreSubmit(slot, game, score) {
     slot.innerHTML = `<div class="submit-score"><div class="submit-msg">Posting…</div></div>`;
     try {
       const { rank, best, newBest } = await send();
+      clearGuestScore(game);
       const where = rank === 1 ? `You're the champion! 👑` : `You're #${rank} on the leaderboard.`;
       slot.innerHTML = `<div class="submit-score"><div class="submit-msg good">${newBest ? 'New best posted. ' : `Posted. Your best is still ${best}. `}${where}</div></div>`;
       document.dispatchEvent(new CustomEvent('tartr8:score', { detail: { game } }));
     } catch (err) {
-      if (err.status === 401) { setUser(null); return askForAccount(); }
+      if (err.status === 401) { setUser(null); return offerGuestPost(); }
       slot.innerHTML = `<div class="submit-score"><div class="submit-msg bad">${escapeHtml(err.message)}</div><button class="submit-btn">Try again</button></div>`;
       slot.querySelector('.submit-btn').onclick = post;
     }
   }
 
-  function askForAccount() {
-    const open = () => openAuth({ mode: 'register', reason: `Create an account to put your ${score} score on the leaderboard.`, onSuccess: post });
-    slot.innerHTML = `<div class="submit-score"><span>Create an account to put this score on the leaderboard.</span><button class="submit-btn">Create account</button></div>`;
-    slot.querySelector('.submit-btn').onclick = open;
-    open();
+  // No popup: the guest keeps playing, and the button is there when they want to post.
+  function offerGuestPost() {
+    const shown = formatScore(game, score);
+    slot.innerHTML = `<div class="submit-score">
+        <span>Your best this visit: <strong>${escapeHtml(shown)}</strong>. Sign up to put it on the leaderboard.</span>
+        <button class="submit-btn">Post best score</button>
+      </div>`;
+    slot.querySelector('.submit-btn').onclick = () => openAuth({
+      mode: 'register',
+      reason: `Create an account (or sign in) to post your best score of ${shown}.`,
+      onSuccess: post
+    });
   }
 
-  currentUser ? post() : askForAccount();
+  if (currentUser) return post();
+  score = recordGuestScore(game, score); // post the guest's best, not just this round
+  offerGuestPost();
 }

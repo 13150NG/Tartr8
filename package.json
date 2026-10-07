@@ -1,0 +1,12 @@
+{
+  "name": "tartr8-repo",
+  "private": true,
+  "description": "Shortcuts so npm commands work from the repo root. The app lives in TARTR8-V1.1-editable/.",
+  "scripts": {
+    "dev": "npm --prefix TARTR8-V1.1-editable run dev",
+    "start": "npm --prefix TARTR8-V1.1-editable start",
+    "test": "npm --prefix TARTR8-V1.1-editable test",
+    "build": "npm --prefix TARTR8-V1.1-editable run build",
+    "install:app": "npm --prefix TARTR8-V1.1-editable install"
+  }
+}

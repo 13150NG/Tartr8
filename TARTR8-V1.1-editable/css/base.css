@@ -45,7 +45,7 @@ img { max-width: 100%; }
 .eyebrow {
   font-size: 11px;
   letter-spacing: .18em;
-  color: #9ba4ae;
+  color: var(--text-dim);
   font-weight: 700;
   display: flex;
   align-items: center;
