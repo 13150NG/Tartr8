@@ -5,6 +5,11 @@ const store = {
   set(key, value) { try { localStorage.setItem(key, value); } catch {} }
 };
 
+// A reaction faster than this is a lucky tap as the signal turned green, not a real reaction.
+// Same limit as the server's (server/games.js). Clear any such time saved before the check existed.
+const REACTION_MIN_MS = 10;
+if (store.get('tartr8Best') && Number(store.get('tartr8Best')) < REACTION_MIN_MS) store.set('tartr8Best', '');
+
 function setResult(el, text, tone) {
   el.textContent = text;
   el.className = 'result' + (tone ? ' ' + tone : '');
@@ -46,6 +51,11 @@ function reaction() {
       setResult(res, 'Too early — false start.', 'bad');
     } else if (state === 'ready') {
       const ms = Math.round(performance.now() - start);
+      if (ms < REACTION_MIN_MS) {
+        reset('TRY AGAIN');
+        setResult(res, 'Too early — false start.', 'bad');
+        return;
+      }
       reset('AGAIN');
       lastEl.textContent = ms + 'ms';
       offerScoreSubmit(document.getElementById('submitSlot'), 'reaction', ms);

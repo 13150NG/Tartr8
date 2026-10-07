@@ -7,18 +7,18 @@ const { TOPICS, subjectFor } = require('./topics');
 
 const ROOT = path.join(__dirname, '..');
 
-// Small in-memory limiter: at most `max` requests per `windowMs` per IP.
-function rateLimit({ windowMs, max, enabled = true }) {
+// Small in-memory limiter: at most `max` requests per `windowMs` per key (the visitor's IP by default).
+function rateLimit({ windowMs, max, enabled = true, key = req => req.ip }) {
   if (!enabled) return (req, res, next) => next();
   const hits = new Map();
   return (req, res, next) => {
-    const now = Date.now();
-    const recent = (hits.get(req.ip) || []).filter(t => now - t < windowMs);
+    const now = Date.now(), id = key(req);
+    const recent = (hits.get(id) || []).filter(t => now - t < windowMs);
     if (recent.length >= max) {
       return res.status(429).json({ error: 'Too many requests. Please slow down.' });
     }
     recent.push(now);
-    hits.set(req.ip, recent);
+    hits.set(id, recent);
     next();
   };
 }
@@ -103,7 +103,8 @@ function createApp(db, { rateLimits = true } = {}) {
   });
 
   // Scores post automatically after every game, and a Reaction round takes only a few seconds.
-  api.post('/scores', rateLimit({ windowMs: 60_000, max: 60, enabled: rateLimits }), auth.requireUser, async (req, res) => {
+  // Counted per player, not per IP: behind the host's proxy many players can share one address.
+  api.post('/scores', auth.requireUser, rateLimit({ windowMs: 60_000, max: 60, enabled: rateLimits, key: req => req.user.id }), async (req, res) => {
     const { game: id, score } = req.body || {};
     const game = GAMES[id];
     if (!game) return res.status(400).json({ error: 'Unknown game.' });

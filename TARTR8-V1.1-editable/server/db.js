@@ -55,7 +55,9 @@ function sqliteDriver(file) {
 function nodeSqliteDriver(file) {
   const { DatabaseSync } = require('node:sqlite');
   const db = new DatabaseSync(file);
-  db.exec('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
+  // Unlike better-sqlite3 (5 s), node:sqlite fails at once with "database is locked" when another
+  // process (e.g. a second Passenger worker) is writing; wait for it instead.
+  db.exec('PRAGMA busy_timeout = 5000; PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
   const prep = sql => db.prepare(sql);
   return {
     kind: 'sqlite',
